@@ -1,0 +1,135 @@
+/* Card */
+.CardAudit {
+    width: 100vw;
+    height: 500vh;
+}
+
+.cardAudit {
+    background-color: #27273D;
+    color: #FFFFFF;
+}
+
+.CardBody {
+    list-style-type: none;
+    margin: 0%;
+    display: flex;
+
+    /* --dot-bg: black;
+    --dot-color: white;
+    --dot-size: 1px;
+    --dot-space: 22px;
+    background:
+        linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+        linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+        var(--dot-color); */
+}
+
+
+Div {
+    text-align: center;
+}
+
+/* Side Bar */
+
+.sidebar {
+    width: 350px;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #2E2E48;
+}
+
+.sidebar .heading {
+    padding: 40px 25px 25px 25px;
+    margin-bottom: 5%;
+    font-weight: 700;
+    font-size: 22px;
+    border-bottom: solid #464667;
+    border-bottom-width: 2px;
+}
+
+.SideBarList {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+}
+
+.SideBarList .row {
+    width: 100%;
+    height: 40px;
+    list-style-type: none;
+    margin: 0%;
+    display: flex;
+    flex-direction: row;
+    color: #FFFFFF;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 14px;
+}
+
+.row #icon {
+    flex: 2;
+    display: grid;
+    place-items: center;
+    padding-left: 12%;
+}
+
+.row #title {
+    flex: 8;
+    text-align: left;
+    margin-top: 2px;
+}
+
+/* Topper */
+
+.topper {
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    /* justify-content: center; */
+    /* background-color: #2E2E48; */
+}
+
+.topper .heading {
+    padding: 40px 0px 20px 50px;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.topper .projName {
+    list-style-type: none;
+    margin: 0%;
+    position: absolute;
+    right: 50px;
+    top: 45px;
+    font-size: 16px;
+
+}
+
+.row {
+    display: flex;
+}
+
+.topper-name {
+    padding: 0px 0px 0px 60px;
+    margin: 0px;
+    font-size: 14px;
+}
+
+.topper-search {
+    margin: 0;
+    padding: 0;
+}
+
+.audit-btn {
+    background-color: #4A3AFF;
+    color: #FFFFFF;
+    padding: 0px 20px;
+    margin: 0px;
+}

@@ -1,0 +1,16 @@
+---
+- name: Fetch file from server
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Export security configuration
+      win_shell: secedit /export /cfg C:\Windows\Temp\security.cfg
+      ignore_errors: yes
+    - name: Fecth file security.cfg
+      ansible.builtin.fetch:
+        src: C:\Windows\Temp\security.cfg
+        dest: ../../../../audit-file/security.cfg
+        flat: yes
+    - name: Remove file security.cfg
+      win_shell: rm C:\Windows\Temp\security.cfg
+      ignore_errors: yes

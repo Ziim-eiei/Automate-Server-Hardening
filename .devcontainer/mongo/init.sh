@@ -1,0 +1,1 @@
+mongoimport --db=${MONGO_INITDB_DATABASE} --collection=cis_benchmark --jsonArray --file=docker-entrypoint-initdb.d/cis-benchmark.json

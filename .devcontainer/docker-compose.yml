@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-back
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
+    network_mode: service:db
+
+  # back:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile-back
+  #   network_mode: service:db
+
+  db:
+    image: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root123
+      MONGO_INITDB_DATABASE: ash
+    volumes:
+      - ./mongo/:/docker-entrypoint-initdb.d/
