@@ -56,8 +56,6 @@ async def root():
     return HTMLResponse(html)
 
 
-print(1 + 1)
-
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True, log_level="info")
 
