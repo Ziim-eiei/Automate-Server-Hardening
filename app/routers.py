@@ -162,7 +162,7 @@ async def list_server():
     ]
     servers = list(
         monogo_client.find()
-        .sort("benchmark_no")
-        .collation(Collation(locale="en_US", numericOrdering=True))
+        # .sort("benchmark_no")
+        # .collation(Collation(locale="en_US", numericOrdering=True))
     )
     return servers
