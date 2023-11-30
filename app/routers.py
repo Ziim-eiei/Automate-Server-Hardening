@@ -2,6 +2,7 @@ from fastapi import APIRouter, status, WebSocket
 from starlette.websockets import WebSocketState
 from dotenv import dotenv_values
 from pymongo import MongoClient
+from pymongo.collation import Collation
 from jinja2 import Environment, FileSystemLoader
 from fastapi.encoders import jsonable_encoder
 from models import *
@@ -159,5 +160,9 @@ async def list_server():
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]][
         "cis_benchmark"
     ]
-    servers = list(monogo_client.find())
+    servers = list(
+        monogo_client.find()
+        .sort("benchmark_no")
+        .collation(Collation(locale="en_US", numericOrdering=True))
+    )
     return servers
