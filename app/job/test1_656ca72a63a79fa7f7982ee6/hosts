@@ -1,7 +1,7 @@
 [windows]
-{{server_ip}}
+20.255.39.66
 [windows:vars]
 ansible_connection=winrm 
-ansible_user={{server_username}}
-ansible_password={{server_password}}
+ansible_user=test-cis
+ansible_password=h42O{g0^[vShv/5{_Ys£
 ansible_winrm_server_cert_validation=ignore

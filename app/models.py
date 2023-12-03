@@ -16,11 +16,13 @@ class Employee(BaseModel):
 
 class Command(BaseModel):
     cmd: str
+    id: str
 
 
 class Job(BaseModel):
     server_id: str
-    topic_select: Optional[List] = Field(default=[])
+    topic_select: dict = Field(default={})
+    type: str
 
 
 class Server(BaseModel):
@@ -49,7 +51,7 @@ class CIS_Benchmark(BaseModel):
 class Hardening_Job(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default="")
     server_id: Optional[PyObjectId] = Field(default="")
-    topic_select: List = Field(default=[])
+    topic_select: dict = Field(default={})
     status: str = Field(default="")
     run_at: Optional[datetime.datetime] = Field(default=None)
     history: str = Field(default="")
