@@ -4,8 +4,10 @@
 
 :root {
   background: #0E1625;
-    /* max-width: 1280px; */
-    margin: 0 auto;
-    padding: 30px 30px 30px 30px ;
-    text-align: center;
-  }
+  max-width: auto;
+  max-height: auto;
+  margin: 0;
+  border: 0;
+  padding: 30px 30px 30px 30px;
+  text-align: center;
+}
