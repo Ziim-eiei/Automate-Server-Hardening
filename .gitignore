@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 test-back
-*/__pycache__
+**/__pycache__
 */cis
 */audit-file
 */job
