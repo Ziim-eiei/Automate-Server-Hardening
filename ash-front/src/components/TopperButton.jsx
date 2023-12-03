@@ -1,6 +1,6 @@
 import {extendVariants, Button} from "@nextui-org/react";
 
-export const MyButton = extendVariants(Button, {
+export const TopperButton = extendVariants(Button, {
   variants: {
     // <- modify/add variants
     color: {

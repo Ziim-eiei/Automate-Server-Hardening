@@ -1,12 +1,12 @@
 import React from 'react'
 import '../css/Background.css'
-import CardAudit from '../components/CardAudit'
 
+import AuditCard from '../components/AuditCard'
 
 function AuditPage() {
   return (
     <div>
-      <CardAudit />
+      <AuditCard/>
     </div>
 
   )

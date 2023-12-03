@@ -1,11 +1,11 @@
 import React from 'react'
-import '../css/cards.css'
+import '../css/Card.css'
 import { SideBarData } from './SideBarData'
 
 function SideBar() {
     return (
-        <div class='sidebar' >
-            <h1 className='heading'>Hardening & Audit</h1>
+        <span class='sidebar' >
+            <h1 className='Sidebar-heading'>Hardening & Audit</h1>
             <ul className='SideBarList'>
                 {SideBarData.map((val, key) => {
                     return (
@@ -16,7 +16,7 @@ function SideBar() {
                     );
                 })}
             </ul>
-        </div>
+        </span>
     )
 }
 
