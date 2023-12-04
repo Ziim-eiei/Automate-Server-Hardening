@@ -88,7 +88,7 @@ async def run_job(job: Job):
         "hardening_job"
     ]
     server = monogo_client.find_one({"server_id": ObjectId(job["server_id"])})
-    print(server["path"])
+    # print(server["path"])
     with open(f"{server['path'] + '/vars'}/main.yml", "w") as file:
         file.write(render_file)
     myquery = {"server_id": ObjectId(job["server_id"])}
@@ -102,7 +102,7 @@ async def run_job(job: Job):
     monogo_client.update_one(myquery, newvalues)
     # run command
     cmd = f"ansible-playbook -i {server['path']+'/hosts'} {server['path']+'/tasks/main.yml'}"
-    print(cmd)
+    # print(cmd)
     asyncio.create_task(run_proc(cmd, job["server_id"]))
     return {"msg": "running"}
 

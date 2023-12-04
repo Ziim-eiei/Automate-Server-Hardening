@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Path
 from dotenv import dotenv_values
 from pymongo import MongoClient
 from fastapi.encoders import jsonable_encoder
@@ -31,8 +31,15 @@ async def create_project(body: Project):
     return body
 
 
-@router.delete("/projects")
-async def delete_project():
+# @router.delete("/projects")
+# async def delete_project():
+#     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
+#     result = monogo_client.drop()
+#     return {"msg": "delete all project"}
+
+
+@router.delete("/projects/{project_id}")
+async def delete_project(project_id: Annotated[str, Path(...)]):
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
-    result = monogo_client.drop()
-    return {"msg": "delete all project"}
+    result = monogo_client.delete_one({"_id": ObjectId(project_id)})
+    return {"msg": f"{project_id} deleted"}

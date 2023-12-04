@@ -31,6 +31,7 @@ class Server(BaseModel):
     server_username: str
     server_password: str
     project_id: str
+    path: str = Field(default="")
 
 
 class Project(BaseModel):
@@ -54,8 +55,9 @@ class Hardening_Job(BaseModel):
     topic_select: dict = Field(default={})
     status: str = Field(default="")
     run_at: Optional[datetime.datetime] = Field(default=None)
+    created_at: datetime.datetime
     history: str = Field(default="")
-    path: str = Field(default="")
+    # path: str = Field(default="")
 
 
 class Audit_Result(BaseModel):

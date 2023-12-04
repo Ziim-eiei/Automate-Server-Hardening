@@ -38,40 +38,31 @@ async def create_server(body: Server):
     os.mkdir(path + "/hardening/vars")
     with open(f"{path}/hosts", "w") as file:
         file.write(render_file)
-    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]][
-        "hardening_job"
-    ]
     shutil.copytree("./templates/cis/audit/tasks", path + "/audit/tasks")
     shutil.copytree("./templates/cis/hardening/tasks", path + "/hardening/tasks")
-    result = monogo_client.insert_one(
-        {"server_id": body["_id"], "path": path, "status": "not running"}
-    )
+    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
+    myquery = {"_id": ObjectId(body["_id"])}
+    newvalues = {
+        "$set": {
+            "path": path,
+        }
+    }
+    monogo_client.update_one(myquery, newvalues)
     return body
 
 
-@router.post("/jobs")
-async def create_job(job: Job):
-    job = jsonable_encoder(job)
-    # print(job)
-    return {"msg": f"{job}"}
-
-
-@router.delete("/servers")
-async def delete_all_server():
-    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
-    result = monogo_client.drop()
-    shutil.rmtree("./job")
-    return {"msg": "delete all server"}
+# @router.delete("/servers")
+# async def delete_all_server():
+#     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
+#     result = monogo_client.drop()
+#     # shutil.rmtree("./job")
+#     return {"msg": "delete all server"}
 
 
 @router.delete("/servers/{server_id}")
 async def delete_server(server_id: Annotated[str, Path(...)]):
-    # monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
-    # result = monogo_client.delete_one({"_id": ObjectId(server_id)})
-    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
+    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
     result = monogo_client.find_one(ObjectId(server_id))
-    print(result)
-    # path = f"./job/{result['project_name'] +'_'+ str(server_id)}"
-    # print(result["path"])
-    # shutil.rmtree(path)
+    shutil.rmtree(result["path"])
+    result = monogo_client.delete_one({"_id": ObjectId(server_id)})
     return {"msg": f"{server_id} deleted"}

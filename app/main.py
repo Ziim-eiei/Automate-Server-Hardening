@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 import uvicorn, logging
-from routers import project, server, hardening, document
+from routers import project, server, hardening, document, job
 from fastapi.middleware.cors import CORSMiddleware
 
 # app = FastAPI(docs_url=None, redoc_url=None)
 logging.basicConfig(level=logging.DEBUG)
 app = FastAPI()
+app.include_router(job.router)
 app.include_router(server.router)
 app.include_router(hardening.router)
 app.include_router(document.router)
