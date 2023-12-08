@@ -13,10 +13,17 @@ config = dotenv_values(".env")
 
 
 @router.get("/servers", response_model=List[Server])
-async def list_server():
+async def list_all_server():
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
     servers = list(monogo_client.find().limit(10))
     return servers
+
+
+@router.get("/servers/{server_id}", response_model=Server)
+async def list_server(server_id: Annotated[str, Path(...)]):
+    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
+    result = monogo_client.find_one(ObjectId(server_id))
+    return result
 
 
 @router.post("/servers", status_code=status.HTTP_201_CREATED, response_model=Server)

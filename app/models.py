@@ -22,7 +22,7 @@ class Command(BaseModel):
 class Job(BaseModel):
     server_id: str
     topic_select: dict = Field(default={})
-    type: str
+    type: Optional[str] = Field(default="")
 
 
 class Server(BaseModel):
@@ -46,7 +46,8 @@ class CIS_Benchmark(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     benchmark_no: str
     benchmark_name: str
-    benchmark_child: List = Field(default=[])
+    benchmark_child: Optional[List] = Field(default=[])
+    benchmark_detail: Optional[str] = Field(default="")
 
 
 class Hardening_Job(BaseModel):

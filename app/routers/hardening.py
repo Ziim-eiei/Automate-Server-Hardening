@@ -39,7 +39,7 @@ def save_history(output, id):
     # print(output)
     # history.append(output)
     # print(history)
-    myquery = {"server_id": ObjectId(id)}
+    myquery = {"server_id": id}
     newvalues = {"$set": {"history": output, "status": "success"}}
     monogo_client.update_one(myquery, newvalues)
 
@@ -84,14 +84,15 @@ async def run_job(job: Job):
     render_file = template.render(body_json)
     # print(render_file)
     job = job.model_dump()
+    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
+    server = monogo_client.find_one({"_id": ObjectId(job["server_id"])})
+    # print(server)
+    with open(f"{server['path'] + '/hardening/vars'}/main.yml", "w") as file:
+        file.write(render_file)
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]][
         "hardening_job"
     ]
-    server = monogo_client.find_one({"server_id": ObjectId(job["server_id"])})
-    # print(server["path"])
-    with open(f"{server['path'] + '/vars'}/main.yml", "w") as file:
-        file.write(render_file)
-    myquery = {"server_id": ObjectId(job["server_id"])}
+    myquery = {"server_id": job["server_id"]}
     newvalues = {
         "$set": {
             "status": "running",
@@ -101,9 +102,10 @@ async def run_job(job: Job):
     }
     monogo_client.update_one(myquery, newvalues)
     # run command
-    cmd = f"ansible-playbook -i {server['path']+'/hosts'} {server['path']+'/tasks/main.yml'}"
+    cmd = f"ansible-playbook -i {server['path']+'/hosts'} {server['path']+'/hardening/tasks/main.yml'}"
     # print(cmd)
-    asyncio.create_task(run_proc(cmd, job["server_id"]))
+    # asyncio.create_task(run_proc(cmd, job["server_id"]))
+    print(job)
     return {"msg": "running"}
 
 

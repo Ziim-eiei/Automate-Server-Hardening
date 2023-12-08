@@ -15,14 +15,14 @@
 #     - always
 #     - prelim_tasks
 
-- name: Execute the section 1 tasks
+- name: Run Hardening Task
   hosts: all
   gather_facts: no
   vars_files:
     - ../vars/main.yml
   tasks:
     - import_tasks: section1.yml
-      when: win19cis_section01
+    - import_tasks: section2.yml
   tags:
     - section01
 # - name: Execute the section 2 tasks

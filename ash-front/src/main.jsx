@@ -1,41 +1,49 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-// import './index.css'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import Test from './pages/Test.jsx'
-import Home from './pages/Home.jsx'
-import NoPage from './pages/NoPage.jsx'
-import AuditPage from './pages/AuditPage.jsx';
-
-import {NextUIProvider} from '@nextui-org/react'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import NoPage from "./pages/NoPage.jsx";
+import AuditPage from "./pages/AuditPage.jsx";
+import { NextUIProvider } from "@nextui-org/react";
+import CreateProject from "./pages/CreateProject.jsx";
+import ManageProject from "./pages/ManageProject.jsx";
+import ManageServer from "./pages/ManageServer.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Test/>,
+    element: <CreateProject />,
   },
   {
-    path: "/home",
-    element: <Home/>,
+    path: "/project",
+    element: <ManageProject />,
   },
   {
-    path: "/audit",
-    element: <AuditPage/>,
+    path: "/server",
+    element: <ManageServer />,
+  },
+  {
+    path: "/server/:projectId",
+    element: <ManageServer />,
+  },
+  {
+    path: "/hardening",
+    element: <AuditPage />,
+  },
+  {
+    path: "/hardening/:serverId",
+    element: <AuditPage />,
   },
   {
     path: "*",
-    element: <NoPage/>,
+    element: <NoPage />,
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     {/* <App /> */}
     <NextUIProvider>
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </NextUIProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

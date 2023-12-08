@@ -17,9 +17,9 @@ win19cis_rule_1_2_2: {{ topic_select.rule_1_2_2 | default("false") }}
 win19cis_rule_1_2_3: {{ topic_select.rule_1_2_3 | default("false") }}
 
 # Section 2.x.x
-win19cis_rule_2_2_1: true
+win19cis_rule_2_2_1: {{ topic_select.rule_2_2_1 | default("false") }}
 win19cis_rule_2_2_2: true
-win19cis_rule_2_2_3: true
+win19cis_rule_2_2_3: {{ topic_select.rule_2_2_3 | default("false") }}
 win19cis_rule_2_2_4: true
 win19cis_rule_2_2_5: true
 win19cis_rule_2_2_6: true
@@ -140,25 +140,25 @@ win19cis_rule_2_3_17_8: true
 
 # Section 1 Variables
 # 1.1.1
-win19cis_max_passwords_saved: {{ topic_select.value_1_1_1 | default(24) }}
+win19cis_max_passwords_saved: {{ topic_select.rule_1_1_1_value | default(24) }}
 
 # 1.1.2
-win19cis_maximum_password_age: {{ topic_select.value_1_1_2 | default(365) }}
+win19cis_maximum_password_age: {{ topic_select.rule_1_1_2_value | default(365) }}
 
 # 1.1.3
-win19cis_minimum_password_age: {{ topic_select.value_1_1_3 | default(1) }}
+win19cis_minimum_password_age: {{ topic_select.rule_1_1_3_value | default(1) }}
 
 # 1.1.4
-win19cis_minimum_password_length: {{ topic_select.value_1_1_4 | default(14) }}
+win19cis_minimum_password_length: {{ topic_select.rule_1_1_4_value | default(14) }}
 
 # 1.2.1
-win19cis_account_lockout_duration: {{ topic_select.value_1_2_1 | default(15) }}
+win19cis_account_lockout_duration: {{ topic_select.rule_1_2_1_value | default(15) }}
 
 # 1.2.2
-win19cis_bad_login_lockout_count: {{ topic_select.value_1_2_2 | default(5) }}
+win19cis_bad_login_lockout_count: {{ topic_select.rule_1_2_2_value | default(5) }}
 
 # 1.2.3
-win19cis_account_lockout_counter_reset: {{ topic_select.value_1_2_3 | default(15) }}
+win19cis_account_lockout_counter_reset: {{ topic_select.rule_1_2_3_value | default(15) }}
 
 # Section 2 Variables
 # 2.2.18  
