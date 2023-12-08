@@ -1,12 +1,13 @@
 import configparser
 
 config = configparser.ConfigParser()
-
-# with open("app/audit-file/security.cfg", "r", encoding="utf-16") as r:
-#     lines = r.read()
-# with open("app/audit-file/security.cfg", "w") as w:
-#     w.write(lines)
-config.read("app/audit-file/security.cfg")
+config.read("audit-file/security.cfg", encoding="utf-16")
 print(config.sections())
-print(" ".join([i for i in config["Privilege Rights"]]))
+# t = """MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\NoConnectedUser"""
+# print(" ".join([i for i in config["Registry Values"]]))
+r = config["Registry Values"][
+    r"MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\NoConnectedUser"
+]
+print(r)
+
 # print(int(config["System Access"]["minimumpasswordage"]) == 24)

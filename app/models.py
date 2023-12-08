@@ -16,11 +16,13 @@ class Employee(BaseModel):
 
 class Command(BaseModel):
     cmd: str
+    id: str
 
 
 class Job(BaseModel):
     server_id: str
-    topic_select: Optional[List] = Field(default=[])
+    topic_select: dict = Field(default={})
+    type: Optional[str] = Field(default="")
 
 
 class Server(BaseModel):
@@ -29,6 +31,7 @@ class Server(BaseModel):
     server_username: str
     server_password: str
     project_id: str
+    path: str = Field(default="")
 
 
 class Project(BaseModel):
@@ -43,17 +46,19 @@ class CIS_Benchmark(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     benchmark_no: str
     benchmark_name: str
-    benchmark_child: List = Field(default=[])
+    benchmark_child: Optional[List] = Field(default=[])
+    benchmark_detail: Optional[str] = Field(default="")
 
 
 class Hardening_Job(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default="")
     server_id: Optional[PyObjectId] = Field(default="")
-    topic_select: List = Field(default=[])
+    topic_select: dict = Field(default={})
     status: str = Field(default="")
     run_at: Optional[datetime.datetime] = Field(default=None)
+    created_at: datetime.datetime
     history: str = Field(default="")
-    path: str = Field(default="")
+    # path: str = Field(default="")
 
 
 class Audit_Result(BaseModel):

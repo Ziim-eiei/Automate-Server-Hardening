@@ -1,0 +1,87 @@
+[
+  {
+    "benchmark_no": "1",
+    "benchmark_name": "Account Policies",
+    "benchmark_child": ["1.1", "1.2"]
+  },
+  {
+    "benchmark_no": "1.1",
+    "benchmark_name": "Password Policy",
+    "benchmark_child": ["1.1.1", "1.1.2", "1.1.3", "1.1.4", "1.1.5", "1.1.7"]
+  },
+  {
+    "benchmark_no": "1.1.1",
+    "benchmark_name": "Ensure Enforce password history is set to 24 or more passwords",
+    "benchmark_detail": "This policy setting determines the number of renewed, unique passwords that have to be\nassociated with a user account before you can reuse an old password. The value for this\npolicy setting must be between 0 and 24 passwords. The default value for Windows Vista is\n0 passwords, but the default setting in a domain is 24 passwords. To maintain the\neffectiveness of this policy setting, use the Minimum password age setting to prevent users\nfrom repeatedly changing their password.\n\nThe recommended state for this setting is: 24 or more password(s)."
+  },
+  {
+    "benchmark_no": "1.1.2",
+    "benchmark_name": "Ensure Maximum password age is set to 365 or fewer days,but not 0",
+    "benchmark_detail": "This policy setting defines how long a user can use their password before it expires.\nValues for this policy setting range from 0 to 999 days. If you set the value to 0, the\npassword will never expire.\nBecause attackers can crack passwords, the more frequently you change the password the\nless opportunity an attacker has to use a cracked password. However, the lower this value\nis set, the higher the potential for an increase in calls to help desk support due to users\nhaving to change their password or forgetting which password is current.\n\nThe recommended state for this setting is 365 or fewer days, but not 0."
+  },
+  {
+    "benchmark_no": "1.1.3",
+    "benchmark_name": "Ensure Minimum password age is set to 1 or more days",
+    "benchmark_detail": "This policy setting determines the number of days that you must use a password before\nyou can change it. The range of values for this policy setting is between 1 and 999 days.\n(You may also set the value to 0 to allow immediate password changes.) The default value\nfor this setting is 0 days.\n\nThe recommended state for this setting is: 1 or more day(s)."
+  },
+  {
+    "benchmark_no": "1.1.4",
+    "benchmark_name": "Ensure Minimum password length is set to 14 or more characters",
+    "benchmark_detail": "This policy setting determines the least number of characters that make up a password for\na user account. There are many different theories about how to determine the best\npassword length for an organization, but perhaps \"passphrase\" is a better term than\n\"password.\" In Microsoft Windows 2000 and newer, passphrases can be quite long and can\ninclude spaces. Therefore, a phrase such as \"I want to drink a $5 milkshake\" is a valid\npassphrase; it is a considerably stronger password than an 8 or 10 character string of\nrandom numbers and letters, and yet is easier to remember. Users must be educated about\nthe proper selection and maintenance of passwords, especially with regard to password\nlength. In enterprise environments, the ideal value for the Minimum password length\nsetting is 14 characters, however you should adjust this value to meet your organization's\nbusiness requirements.\n\nThe recommended state for this setting is: 14 or more character(s)."
+  },
+  {
+    "benchmark_no": "1.1.5",
+    "benchmark_name": "Ensure Password must meet complexity requirements is set to Enabled",
+    "benchmark_detail": "This policy setting checks all new passwords to ensure that they meet basic requirements\nfor strong passwords.\nWhen this policy is enabled, passwords must meet the following minimum requirements:\n- Not contain the user's account name or parts of the user's full name that exceed two\n  consecutive characters\n- Be at least six characters in length\n- Contain characters from three of the following categories:\n\t- English uppercase characters (A through Z)\n\t- English lowercase characters (a through z)\n\t- Base 10 digits (0 through 9)\n\t- Non-alphabetic characters (for example, !, $, #, %)\n\t- A catch-all category of any Unicode character that does not fall under the\n\t  previous four categories. This fifth category can be regionally specific.\n\nThe recommended state for this setting is: Enabled."
+  },
+  {
+    "benchmark_no": "1.1.7",
+    "benchmark_name": "Ensure Store passwords using reversible encryption is set to Disabled",
+    "benchmark_detail": "This policy setting determines whether the operating system stores passwords in a way\nthat uses reversible encryption, which provides support for application protocols that\nrequire knowledge of the user's password for authentication purposes. Passwords that are\nstored with reversible encryption are essentially the same as plaintext versions of the\npasswords.\n\nThe recommended state for this setting is: Disabled."
+  },
+  {
+    "benchmark_no": "1.2",
+    "benchmark_name": "Account Lockout Policy",
+    "benchmark_child": ["1.2.1", "1.2.2", "1.2.3"]
+  },
+  {
+    "benchmark_no": "1.2.1",
+    "benchmark_name": "Ensure Account lockout duration is set to 15 or more minutes",
+    "benchmark_detail": "This policy setting determines the length of time that must pass before a locked account is\nunlocked and a user can try to log on again. The setting does this by specifying the number\nof minutes a locked out account will remain unavailable. If the value for this policy setting\nis configured to 0, locked out accounts will remain locked out until an administrator\nmanually unlocks them.\n\nAlthough it might seem like a good idea to configure the value for this policy setting to a\nhigh value, such a configuration will likely increase the number of calls that the help desk\nreceives to unlock accounts locked by mistake. Users should be aware of the length of time\na lock remains in place, so that they realize they only need to call the help desk if they have\nan extremely urgent need to regain access to their computer.\n\nThe recommended state for this setting is: 15 or more minute(s)."
+  },
+  {
+    "benchmark_no": "1.2.2",
+    "benchmark_name": "Ensure Account lockout threshold is set to 5 or fewer invalid logon attempts, but not 0",
+    "benchmark_detail": "This policy setting determines the number of failed logon attempts before the account is\nlocked. Setting this policy to 0 does not conform to the benchmark as doing so disables the\naccount lockout threshold.\n\nThe recommended state for this setting is: 5 or fewer invalid logon attempt(s), but not 0."
+  },
+  {
+    "benchmark_no": "1.2.3",
+    "benchmark_name": "Ensure Reset account lockout counter after is set to 15 or more minutes",
+    "benchmark_detail": "This policy setting determines the length of time before the Account lockout threshold\nresets to zero. The default value for this policy setting is Not Defined. If the Account lockout\nthreshold is defined, this reset time must be less than or equal to the value for the Account\nlockout duration setting.\n\nIf you leave this policy setting at its default value or configure the value to an interval that\nis too long, your environment could be vulnerable to a DoS attack. An attacker could\nmaliciously perform a number of failed logon attempts on all users in the organization,\nwhich will lock out their accounts. If no policy were determined to reset the account\nlockout, it would be a manual task for administrators. Conversely, if a reasonable time\nvalue is configured for this policy setting, users would be locked out for a set period until\nall of the accounts are unlocked automatically.\n\nThe recommended state for this setting is: 15 or more minute(s)."
+  },
+  {
+    "benchmark_no": "2",
+    "benchmark_name": "Local Policies",
+    "benchmark_child": ["2.1", "2.2"]
+  },
+  {
+    "benchmark_no": "2.1",
+    "benchmark_name": "Audit Policy",
+    "benchmark_detail": "This section is intentionally blank and exists to ensure the structure of Windows benchmarks is consistent"
+  },
+  {
+    "benchmark_no": "2.2",
+    "benchmark_name": "User Rights Assignment",
+    "benchmark_child": ["2.2.1", "2.2.3"]
+  },
+  {
+    "benchmark_no": "2.2.1",
+    "benchmark_name": "Ensure Access Credential Manager as a trusted caller is set to No One",
+    "benchmark_detail": "This security setting is used by Credential Manager during Backup and Restore. No\naccounts should have this user right, as it is only assigned to Winlogon. Users' saved\ncredentials might be compromised if this user right is assigned to other entities.\n\nThe recommended state for this setting is: No One."
+  },
+  {
+    "benchmark_no": "2.2.3",
+    "benchmark_name": "Ensure Access this computer from the network' is set to Administrators, Authenticated Users (MS only)",
+    "benchmark_detail": "This policy setting allows other users on the network to connect to the computer and is\nrequired by various network protocols that include Server Message Block (SMB)-based\nprotocols, NetBIOS, Common Internet File System (CIFS), and Component Object Model\nPlus (COM+).\n\nThe recommended state for this setting is: Administrators, Authenticated Users."
+  }
+]

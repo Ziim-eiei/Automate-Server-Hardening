@@ -1,13 +1,17 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 import uvicorn, logging
-import routers
+from routers import project, server, hardening, document, job
 from fastapi.middleware.cors import CORSMiddleware
 
 # app = FastAPI(docs_url=None, redoc_url=None)
 logging.basicConfig(level=logging.DEBUG)
 app = FastAPI()
-app.include_router(routers.router)
+app.include_router(job.router)
+app.include_router(server.router)
+app.include_router(hardening.router)
+app.include_router(document.router)
+app.include_router(project.router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # You can replace "*" with your specific frontend's URL
@@ -55,8 +59,6 @@ html = """
 async def root():
     return HTMLResponse(html)
 
-
-print(1 + 1)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True, log_level="info")
