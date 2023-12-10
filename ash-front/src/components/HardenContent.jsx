@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardBody, Checkbox, Input } from "@nextui-org/react";
+import { Accordion, AccordionItem } from "@nextui-org/react";
+import { color } from "framer-motion";
+
 function HardenContent({
   setChangeTopic,
   setTopic,
@@ -101,94 +104,129 @@ function HardenContent({
   }, [history]);
   // useEffect(() => {
 
+  const render = (d) =>{
+    return (
+      <>
+      {d.benchmark_detail || topic_value.find((t) => t == d.benchmark_no) ? 
+        <Accordion variant="splitted">
+         <AccordionItem id={d.benchmark_no} title={ d.benchmark_no +" "+ d.benchmark_name && topic_value.find((t) => t == d.benchmark_no)} startContent={ 
+                   name != "" && d.benchmark_detail && d.benchmark_no != "2.1" ?
+         <Checkbox
+                       onChange={(e) => {
+                         handleCheck(d.benchmark_no, e.target.checked);
+                       }}
+                       value={history}
+                       isSelected={
+                         history[`rule_${d.benchmark_no.replace(/\./g, "_")}`]
+                       }
+                     ></Checkbox>:null}>
+           {d.benchmark_detail ? (
+                   <p className=" text-black/90 text-[1rem]">
+                     <span className="font-bold">Detail:</span> {""}
+                     {d.benchmark_detail}
+                   </p>
+                 ) : d.benchmark_no +" "+ d.benchmark_name}
+         </AccordionItem>
+         </Accordion> : 
+        <Card 
+               isPressable={d.benchmark_detail ? false : true}
+               className="w-fit h-1/2 px-8 m-[1rem] bg-gradient-to-tr from-blue-500 to-yellow-500 cursor-pointer"
+               key={d._id}
+               onPress={() => {
+                 handlechangeTopic(d.benchmark_name, d.benchmark_no);
+               }}
+             >
+               <CardBody>
+                 {name != "" && d.benchmark_detail && d.benchmark_no != "2.1" ? (
+                   <p className=" text-black/90 text-[1rem]">
+                     {/* <input
+                 type="checkbox"
+                 onChange={(e) => {
+                   handleCheck(d.benchmark_no, e.target.checked);
+                 }}
+                 value={history}
+                 checked={
+                   history[`rule_${d.benchmark_no.replace(/\./g, "_")}`]
+                 }
+               /> */}
+                     <Checkbox
+                       onChange={(e) => {
+                         handleCheck(d.benchmark_no, e.target.checked);
+                       }}
+                       value={history}
+                       isSelected={
+                         history[`rule_${d.benchmark_no.replace(/\./g, "_")}`]
+                       }
+                     ></Checkbox>
+                   </p>
+                 ) : null}
+                 <p className="text-black/90 text-[1rem] font-bold">
+                   {d.benchmark_no}: {d.benchmark_name}
+                 </p>
+                 {d.benchmark_detail ? (
+                   <p className=" text-black/90 text-[1rem]">
+                     <span className="font-bold">Detail:</span> {""}
+                     {d.benchmark_detail}
+                   </p>
+                 ) : null}
+                 {topic_value.find((t) => t == d.benchmark_no) &&
+                   checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
+                   <p className=" text-black/90 text-[1rem]">
+                     {/* <input
+                 type="number"
+                 onChange={(e) => {
+                   handleValue(d.benchmark_no, e.target.valueAsNumber);
+                 }}
+                 value={
+                   checkData[
+                     `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
+                   ]
+                 }
+                 min="1"
+                 max="999"
+               /> */}
+                     <br />
+                     <Input
+                       type="number"
+                       classNames={{
+                         inputWrapper: "h-unit-10 w-[4.5rem]",
+                       }}
+                       min="1"
+                       max="999"
+                       value={
+                         checkData[
+                         `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
+                         ]
+                       }
+                       onChange={(e) => {
+                         handleValue(d.benchmark_no, e.target.valueAsNumber);
+                       }}
+                     />
+                   </p>
+                 ) : null}
+               </CardBody>
+             </Card>}
+      </>
+
+    )
+      
+  }
+
   // }, [checkData]);
   return (
     <div
-      className="text-white flex flex-col"
+      className="text-white flex flex-col content"
       style={{ whiteSpace: "pre-wrap" }}
     >
+
       {newData?.map((d) => {
         return (
-          <Card
-            isPressable={d.benchmark_detail ? false : true}
-            className="w-fit h-1/2 px-8 m-[1rem] bg-gradient-to-tr from-blue-500 to-yellow-500 cursor-pointer"
-            key={d._id}
-            onPress={() => {
-              handlechangeTopic(d.benchmark_name, d.benchmark_no);
-            }}
-          >
-            <CardBody>
-              {name != "" && d.benchmark_detail && d.benchmark_no != "2.1" ? (
-                <p className=" text-black/90 text-[1rem]">
-                  {/* <input
-                    type="checkbox"
-                    onChange={(e) => {
-                      handleCheck(d.benchmark_no, e.target.checked);
-                    }}
-                    value={history}
-                    checked={
-                      history[`rule_${d.benchmark_no.replace(/\./g, "_")}`]
-                    }
-                  /> */}
-                  <Checkbox
-                    onChange={(e) => {
-                      handleCheck(d.benchmark_no, e.target.checked);
-                    }}
-                    value={history}
-                    isSelected={
-                      history[`rule_${d.benchmark_no.replace(/\./g, "_")}`]
-                    }
-                  ></Checkbox>
-                </p>
-              ) : null}
-              <p className="text-black/90 text-[1rem] font-bold">
-                {d.benchmark_no}: {d.benchmark_name}
-              </p>
-              {d.benchmark_detail ? (
-                <p className=" text-black/90 text-[1rem]">
-                  <span className="font-bold">Detail:</span> {""}
-                  {d.benchmark_detail}
-                </p>
-              ) : null}
-              {topic_value.find((t) => t == d.benchmark_no) &&
-              checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
-                <p className=" text-black/90 text-[1rem]">
-                  {/* <input
-                    type="number"
-                    onChange={(e) => {
-                      handleValue(d.benchmark_no, e.target.valueAsNumber);
-                    }}
-                    value={
-                      checkData[
-                        `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
-                      ]
-                    }
-                    min="1"
-                    max="999"
-                  /> */}
-                  <br />
-                  <Input
-                    type="number"
-                    classNames={{
-                      inputWrapper: "h-unit-10 w-[4.5rem]",
-                    }}
-                    min="1"
-                    max="999"
-                    value={
-                      checkData[
-                        `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
-                      ]
-                    }
-                    onChange={(e) => {
-                      handleValue(d.benchmark_no, e.target.valueAsNumber);
-                    }}
-                  />
-                </p>
-              ) : null}
-            </CardBody>
-          </Card>
+          <>
+          {render(d)}
+          </>
         );
       })}
+
     </div>
   );
 }

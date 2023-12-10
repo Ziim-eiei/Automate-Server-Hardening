@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
 import { MyButton } from "../components/Button";
+import { SearchIcon } from "./SearchIcon";
 
 function HardenTopper({
   changeTopic,
@@ -46,57 +47,52 @@ function HardenTopper({
   };
   // console.log(serverId);
   return (
-    <span className="topper">
-      {changeTopic && topic?.length > 1 ? (
-        <Breadcrumbs
-          className="heading"
-          itemClasses={{
-            item: "text-white/60 data-[current=true]:text-white text-[1.1rem]",
+    <div className="topper" >
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        {changeTopic && topic?.length > 1 ? (
+          <Breadcrumbs className="heading" itemClasses={{
+            item: "text-white/60 data-[current=true]:text-white text-[1.375rem]",
             separator: "text-white/40",
-          }}
-        >
-          {topic?.map((t) => {
-            return (
-              <BreadcrumbItem
-                key={t.no}
-                onPress={() => {
-                  handleClick(t.name);
-                }}
-              >
-                {t.name}
-              </BreadcrumbItem>
-            );
-          })}
-        </Breadcrumbs>
-      ) : (
-        <h1 className="heading">Select topic to Hardening & Audit</h1>
-      )}
-      {serverId ? (
-        <>
-          <p className="projName">Project name: {data?.project_name}</p>
-          <div className="projName p-10">
-            <MyButton
-              onClick={() => {
-                setIsPressHarden(true);
-                // setServerId(serverId);
-              }}
-              isDisabled={Object.keys(checkData).length != 0 ? false : true}
-            >
-              Hardening
-            </MyButton>
-          </div>
-        </>
-      ) : (
-        <>
-          <p className="projName text-danger">Please choose server</p>
-        </>
-      )}
+          }}>
+            {topic?.map((t) => {
+              return (
+                <BreadcrumbItem key={t.no} onPress={() => { handleClick(t.name); }} >
+                  {t.name}
+                </BreadcrumbItem>
+              );
+            })}
+          </Breadcrumbs>
+        ) : (
+          <h1 className="heading HeadText">Select topic to Hardening & Audit</h1>
+        )}
+        {serverId ? (
+          <>
+            <p className="projName SubText">Project name: {data?.project_name}</p>
 
-      <div className="row">
-        <p className="col topper-name">Name</p>
-        <input className="topper-search" placeholder="Type to search..." />
+          </>
+        ) : (
+          <>
+            <p className="projName text-danger">Please choose server</p>
+          </>
+        )}
       </div>
-    </span>
+
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <p className="topper-name SubText">Name</p>
+        <div >
+          {/* <input className="topper-search" placeholder="Type to search..." /> */}
+
+          <MyButton className="topper-btn" onClick={() => {
+            setIsPressHarden(true);
+            // setServerId(serverId);
+          }}
+            isDisabled={Object.keys(checkData).length != 0 ? false : true}
+          >
+            Hardening
+          </MyButton>
+        </div>
+      </div>
+    </div>
   );
 }
 

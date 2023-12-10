@@ -7,13 +7,13 @@ function SideBar() {
   const navigate = useNavigate();
   return (
     <span className="sidebar">
-      <h1 className="Sidebar-heading">Hardening & Audit</h1>
+      <h1 className="Sidebar-heading HeadText">Hardening & Audit</h1>
       <ul className="SideBarList">
         {SideBarData.map((val, key) => {
           return (
             <li
               key={key}
-              className="row"
+              className="row SubText"
               onClick={() => {
                 if (val.link == "/hardening") window.location.href = val.link;
                 else navigate(val.link);
