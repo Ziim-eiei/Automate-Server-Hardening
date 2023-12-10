@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardBody, Checkbox, Input } from "@nextui-org/react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { color } from "framer-motion";
+import "../css/Card.css";
 
 function HardenContent({
   setChangeTopic,
@@ -108,27 +109,30 @@ function HardenContent({
     return (
       <>
         {d.benchmark_detail ? (
-          <Accordion variant="splitted">
+          <Accordion variant="splitted" style={{ padding: "0px" }} classNames={{ title: "py-3"}}>
             <AccordionItem
+              classNames={{ title: "text-[#E8E8FC] text-[16px] bg-[#2E2E48]" }}
+              style={{
+                backgroundColor: "#2E2E48",
+                marginBottom: "10px",
+                padding: "0px 27px"
+              }}
               id={d.benchmark_no}
               title={
                 d.benchmark_no + " " + d.benchmark_name &&
-                topic_value.find((t) => t == d.benchmark_no) &&
-                checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
+                  topic_value.find((t) => t == d.benchmark_no) &&
+                  checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
                   <>
                     <>{d.benchmark_no + " " + d.benchmark_name}</>
-                    <p className=" text-black/90 text-[1rem]">
-                      <br />
+                    <p className="content-card-Input">
                       <Input
                         type="number"
-                        classNames={{
-                          inputWrapper: "h-unit-10 w-[4.5rem]",
-                        }}
+                        classNames={{ inputWrapper: "h-[1rem] w-[5rem]" }}
                         min="1"
                         max="999"
                         value={
                           checkData[
-                            `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
+                          `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
                           ]
                         }
                         onChange={(e) => {
@@ -156,7 +160,7 @@ function HardenContent({
               }
             >
               {d.benchmark_detail ? (
-                <p className=" text-black/90 text-[1rem]">
+                <p className="content-detail">
                   <span className="font-bold">Detail:</span> {""}
                   {d.benchmark_detail}
                 </p>
@@ -164,11 +168,11 @@ function HardenContent({
                 d.benchmark_no + " " + d.benchmark_name
               )}
             </AccordionItem>
-          </Accordion>
+          </Accordion >
         ) : (
           <Card
             isPressable={d.benchmark_detail ? false : true}
-            className="w-fit h-1/2 px-8 m-[1rem] bg-gradient-to-tr from-blue-500 to-yellow-500 cursor-pointer"
+            className="content-card-noneCheckBox cursor-pointer"
             key={d._id}
             onPress={() => {
               handlechangeTopic(d.benchmark_name, d.benchmark_no);
@@ -176,7 +180,7 @@ function HardenContent({
           >
             <CardBody>
               {name != "" && d.benchmark_detail && d.benchmark_no != "2.1" ? (
-                <p className=" text-black/90 text-[1rem]">
+                <p className="content-card ">
                   {/* <input
                  type="checkbox"
                  onChange={(e) => {
@@ -198,17 +202,17 @@ function HardenContent({
                   ></Checkbox>
                 </p>
               ) : null}
-              <p className="text-black/90 text-[1rem] font-bold">
-                {d.benchmark_no}: {d.benchmark_name}
+              <p className="SubText">
+                {d.benchmark_no} {d.benchmark_name}
               </p>
               {d.benchmark_detail ? (
-                <p className=" text-black/90 text-[1rem]">
+                <p className="text-black/90 text-[1rem]">
                   <span className="font-bold">Detail:</span> {""}
                   {d.benchmark_detail}
                 </p>
               ) : null}
               {topic_value.find((t) => t == d.benchmark_no) &&
-              checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
+                checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
                 <p className=" text-black/90 text-[1rem]">
                   {/* <input
                  type="number"
@@ -233,7 +237,7 @@ function HardenContent({
                     max="999"
                     value={
                       checkData[
-                        `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
+                      `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
                       ]
                     }
                     onChange={(e) => {
@@ -244,7 +248,8 @@ function HardenContent({
               ) : null}
             </CardBody>
           </Card>
-        )}
+        )
+        }
       </>
     );
   };
