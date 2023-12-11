@@ -126,7 +126,7 @@ function HardenContent({
                 d.benchmark_no + " " + d.benchmark_name &&
                 topic_value.find((t) => t == d.benchmark_no) &&
                 checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
-                  <>{d.benchmark_no + " " + d.benchmark_name + " [Editable]"}</>
+                  <>{d.benchmark_no + " " + d.benchmark_name }  <p style={{color:"aqua", display:"inline"}}>[Editable]</p></>
                 ) : (
                   d.benchmark_no + " " + d.benchmark_name
                 )
