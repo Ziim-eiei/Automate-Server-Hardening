@@ -109,7 +109,7 @@ function HardenContent({
     return (
       <>
         {d.benchmark_detail ? (
-          <Accordion variant="splitted" style={{ padding: "0px" }} classNames={{ title: "py-3"}}>
+          <Accordion variant="splitted" style={{ padding: "0px" }} classNames={{ title: "py-3" }}>
             <AccordionItem
               classNames={{ title: "text-[#E8E8FC] text-[16px] bg-[#2E2E48]" }}
               style={{

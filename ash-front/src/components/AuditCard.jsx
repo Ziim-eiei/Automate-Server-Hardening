@@ -94,8 +94,8 @@ function AuditCard() {
               checkData={checkData}
             />
           </div>
-          <div className="Content-Container">
-            <HardenContent
+          <div className="Content-Container example">
+            <HardenContent 
               setChangeTopic={setChangeTopic}
               topic={topic}
               setTopic={setTopic}

@@ -46,6 +46,7 @@
 
 .SideBar-Container {
     grid-area: SideBar;
+    background-color: #2E2E48;
 }
 
 .sidebar {
@@ -54,7 +55,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #2E2E48;
 }
 
 .Sidebar-heading {
@@ -147,10 +147,12 @@
 .Content-Container {
     grid-area: Content;
     /* background-color: blueviolet; */
+    /* height: 520px;
+    overflow-y: scroll; */
 }
 
 .content {
-    margin: 0px 50px;
+    margin: 0px 40px 0px 50px;
 }
 
 .content-card-noneCheckBox {
@@ -178,4 +180,32 @@
     color: #E8E8FC;
     margin-bottom: 10px;
     padding-left: 15px;
+}
+
+/*-- Scroll Bar -----------------------------------*/
+
+.example {
+    height: 520px;
+    overflow-y: scroll;
+    margin-bottom: 20px;
+    
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.example::-webkit-scrollbar {
+    width: 10px;
+}
+
+.example::-webkit-scrollbar-thumb {
+    background: #2E2E48;
+    box-shadow: 2px 2px 15px #0000002c;
+    border-radius: 1rem;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.example {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
