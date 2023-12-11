@@ -109,38 +109,24 @@ function HardenContent({
     return (
       <>
         {d.benchmark_detail ? (
-          <Accordion variant="splitted" style={{ padding: "0px" }} classNames={{ title: "py-3" }}>
+          <Accordion
+            variant="splitted"
+            style={{ padding: "0px" }}
+            classNames={{ title: "py-3" }}
+          >
             <AccordionItem
               classNames={{ title: "text-[#E8E8FC] text-[16px] bg-[#2E2E48]" }}
               style={{
                 backgroundColor: "#2E2E48",
                 marginBottom: "10px",
-                padding: "0px 27px"
+                padding: "0px 27px",
               }}
               id={d.benchmark_no}
               title={
                 d.benchmark_no + " " + d.benchmark_name &&
-                  topic_value.find((t) => t == d.benchmark_no) &&
-                  checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
-                  <>
-                    <>{d.benchmark_no + " " + d.benchmark_name}</>
-                    <p className="content-card-Input">
-                      <Input
-                        type="number"
-                        classNames={{ inputWrapper: "h-[1rem] w-[5rem]" }}
-                        min="1"
-                        max="999"
-                        value={
-                          checkData[
-                          `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
-                          ]
-                        }
-                        onChange={(e) => {
-                          handleValue(d.benchmark_no, e.target.valueAsNumber);
-                        }}
-                      />
-                    </p>
-                  </>
+                topic_value.find((t) => t == d.benchmark_no) &&
+                checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
+                  <>{d.benchmark_no + " " + d.benchmark_name + " [Editable]"}</>
                 ) : (
                   d.benchmark_no + " " + d.benchmark_name
                 )
@@ -159,16 +145,40 @@ function HardenContent({
                 ) : null
               }
             >
-              {d.benchmark_detail ? (
+              {d.benchmark_detail &&
+              topic_value.find((t) => t == d.benchmark_no) ? (
                 <p className="content-detail">
-                  <span className="font-bold">Detail:</span> {""}
+                  <span className="font-bold">Detail:</span>
                   {d.benchmark_detail}
+                  {checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
+                    <Input
+                      type="number"
+                      classNames={{
+                        inputWrapper: "h-unit-10 w-[4.5rem]",
+                      }}
+                      min="1"
+                      max="999"
+                      value={
+                        checkData[
+                          `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
+                        ]
+                      }
+                      onChange={(e) => {
+                        handleValue(d.benchmark_no, e.target.valueAsNumber);
+                      }}
+                    />
+                  ) : null}
                 </p>
               ) : (
-                d.benchmark_no + " " + d.benchmark_name
+                <>
+                  <p className="content-detail">
+                    <span className="font-bold">Detail:</span> {""}
+                    {d.benchmark_detail}
+                  </p>
+                </>
               )}
             </AccordionItem>
-          </Accordion >
+          </Accordion>
         ) : (
           <Card
             isPressable={d.benchmark_detail ? false : true}
@@ -212,7 +222,7 @@ function HardenContent({
                 </p>
               ) : null}
               {topic_value.find((t) => t == d.benchmark_no) &&
-                checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
+              checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
                 <p className=" text-black/90 text-[1rem]">
                   {/* <input
                  type="number"
@@ -237,7 +247,7 @@ function HardenContent({
                     max="999"
                     value={
                       checkData[
-                      `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
+                        `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
                       ]
                     }
                     onChange={(e) => {
@@ -248,8 +258,7 @@ function HardenContent({
               ) : null}
             </CardBody>
           </Card>
-        )
-        }
+        )}
       </>
     );
   };
