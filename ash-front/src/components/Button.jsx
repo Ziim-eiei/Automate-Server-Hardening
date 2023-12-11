@@ -23,5 +23,6 @@ export const MyButton = extendVariants(Button, {
   defaultVariants: {
     // <- modify/add default variants
     size: "md",
+    color:"olive"
   },
 });
