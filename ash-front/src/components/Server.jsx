@@ -1,15 +1,15 @@
 import React from "react";
 import { MyInput } from "./Input";
 
-export default function Server({ server, SetServer }) {
+export default function Server({ server, setServer }) {
   const handleIpChange = (e) => {
-    SetServer({ ...server, ip: e.target.value });
+    setServer({ ...server, ip: e.target.value });
   };
   const handleUsernameChange = (e) => {
-    SetServer({ ...server, username: e.target.value });
+    setServer({ ...server, username: e.target.value });
   };
   const handlePasswordChange = (e) => {
-    SetServer({ ...server, password: e.target.value });
+    setServer({ ...server, password: e.target.value });
   };
   return (
     <div>

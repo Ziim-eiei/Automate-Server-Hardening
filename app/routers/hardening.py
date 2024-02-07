@@ -7,7 +7,7 @@ from fastapi.encoders import jsonable_encoder
 from models import *
 from typing import List
 from bson.objectid import ObjectId
-import subprocess, asyncio, logging
+import subprocess, asyncio, logging, time
 
 router = APIRouter(prefix="/api")
 config = dotenv_values(".env")
@@ -61,12 +61,13 @@ async def run_proc(cmd, id):
                     print(client.client_state)
                     if client.client_state == WebSocketState.CONNECTED:
                         logging.debug(f"Sending to client {client}")
+                        # time.sleep(0.1)
                         await client.send_text(out.decode())
                     else:
                         connected_clients.remove(client)
     except Exception as e:
         print(e)
-    save_history(result_output, id)
+    # save_history(result_output, id)
 
 
 @router.post("/run")
@@ -104,8 +105,7 @@ async def run_job(job: Job):
     # run command
     cmd = f"ansible-playbook -i {server['path']+'/hosts'} {server['path']+'/hardening/tasks/main.yml'}"
     # print(cmd)
-    # asyncio.create_task(run_proc(cmd, job["server_id"]))
-    print(job)
+    asyncio.create_task(run_proc("ls -la && cat main.py", job["server_id"]))
     return {"msg": "running"}
 
 

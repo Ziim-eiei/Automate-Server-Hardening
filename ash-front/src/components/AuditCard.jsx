@@ -1,26 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Divider,
-  Link,
-  Image,
-} from "@nextui-org/react";
+import { Card, CardBody } from "@nextui-org/react";
 
 // import "../css/index.css";
 import "../css/Card.css";
 import SideBar from "./SideBar";
 import HardenTopper from "./HardenTopper";
 import HardenContent from "./HardenContent";
+import { Spinner } from "@nextui-org/react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+} from "@nextui-org/react";
+
 function AuditCard() {
+  const { isOpen, onOpenChange, onOpen } = useDisclosure();
   const [changeTopic, setChangeTopic] = useState(false);
   const [topic, setTopic] = useState([{ no: 0, name: "Topics" }]);
   const [newData, setNewData] = useState([]);
   const [checkData, setCheckData] = useState({});
   const [isPressHarden, setIsPressHarden] = useState(false);
+  const [run, setRun] = useState(false);
   // const [serverId, setServerId] = useState("");
 
   // console.log(serverId);
@@ -43,6 +48,7 @@ function AuditCard() {
   }, [topic]);
   useEffect(() => {
     async function runHarden() {
+      setRun(true);
       const job = await fetch("http://localhost:8000/api/jobs", {
         method: "POST",
         headers: {
@@ -72,16 +78,32 @@ function AuditCard() {
         runHarden();
       }
       setIsPressHarden(false);
+      setMessage([]);
     }
   }, [isPressHarden]);
   const { serverId } = useParams();
-  // console.log(serverId);
+  const ws = useRef(null);
+  useEffect(() => {
+    const socket = new WebSocket("ws://localhost:8000/api/ws");
+    ws.current = socket;
+    ws.current.onmessage = (e) => {
+      // setMessage(...message, e.data);
+      setMessage((prev) => [...prev, e.data]);
+    };
+  }, []);
+  const [message, setMessage] = useState([]);
+  const endOfMessageRef = useRef(null);
+  useEffect(() => {
+    endOfMessageRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [message?.length]);
   return (
     <Card className="CardAudit">
       <CardBody className="CardBody">
         <div className="Container">
           <div className="SideBar-Container">
-            <SideBar />
+            <SideBar serverId={serverId} />
           </div>
           <div className="Heading-Container">
             <HardenTopper
@@ -92,10 +114,11 @@ function AuditCard() {
               serverId={serverId}
               isPressHarden={isPressHarden}
               checkData={checkData}
+              onOpen={onOpen}
             />
           </div>
           <div className="Content-Container example">
-            <HardenContent 
+            <HardenContent
               setChangeTopic={setChangeTopic}
               topic={topic}
               setTopic={setTopic}
@@ -103,9 +126,46 @@ function AuditCard() {
               checkData={checkData}
               setCheckData={setCheckData}
               serverId={serverId}
+              onOpen={onOpen}
+              run={run}
+              setRun={setRun}
             />
-
           </div>
+          <Modal
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            isDismissable={false}
+            scrollBehavior="inside"
+            size="5xl"
+          >
+            <ModalContent>
+              {(onClose) => (
+                <>
+                  <ModalHeader className="flex flex-col gap-3">
+                    Result of Hardening
+                  </ModalHeader>
+                  <ModalBody className="px-[8rem] bg-[#27273D]">
+                    {message != "" ? "" : <Spinner color="white" />}
+                    <p className="whitespace-pre-wrap text-left text-white">
+                      {message}
+                      <div ref={endOfMessageRef} />
+                    </p>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button
+                      color="danger"
+                      onPress={() => {
+                        onClose();
+                        history.go(0);
+                      }}
+                    >
+                      Close
+                    </Button>
+                  </ModalFooter>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
         </div>
       </CardBody>
     </Card>

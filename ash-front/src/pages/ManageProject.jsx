@@ -3,7 +3,6 @@ import SideBar from "../components/SideBar";
 import ProjectTopper from "../components/ProjectTopper";
 import { Card, CardBody } from "@nextui-org/react";
 import ProjectContent from "../components/ProjectContent";
-
 export default function ManageProject() {
   return (
     <Card className="CardAudit">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Breadcrumbs, BreadcrumbItem } from "@nextui-org/react";
 import { MyButton } from "../components/Button";
-import { SearchIcon } from "./SearchIcon";
+// import { SearchIcon } from "./icons/SearchIcon";
 
 function HardenTopper({
   changeTopic,
@@ -10,6 +10,7 @@ function HardenTopper({
   setIsPressHarden,
   serverId,
   checkData,
+  onOpen,
 }) {
   // let { serverId } = useParams();
   const [data, setData] = useState("");
@@ -47,28 +48,39 @@ function HardenTopper({
   };
   // console.log(serverId);
   return (
-    <div className="topper" >
+    <div className="topper">
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         {changeTopic && topic?.length > 1 ? (
-          <Breadcrumbs className="heading" itemClasses={{
-            item: "text-white/60 data-[current=true]:text-white text-[1.375rem]",
-            separator: "text-white/40",
-          }}>
+          <Breadcrumbs
+            className="heading"
+            itemClasses={{
+              item: "text-white/60 data-[current=true]:text-white text-[1.375rem]",
+              separator: "text-white/40",
+            }}
+          >
             {topic?.map((t) => {
               return (
-                <BreadcrumbItem key={t.no} onPress={() => { handleClick(t.name); }} >
+                <BreadcrumbItem
+                  key={t.no}
+                  onPress={() => {
+                    handleClick(t.name);
+                  }}
+                >
                   {t.name}
                 </BreadcrumbItem>
               );
             })}
           </Breadcrumbs>
         ) : (
-          <h1 className="heading HeadText">Select topic to Hardening & Audit</h1>
+          <h1 className="heading HeadText">
+            Select topic to Hardening & Audit
+          </h1>
         )}
         {serverId ? (
           <>
-            <p className="projName SubText">Project name: {data?.project_name}</p>
-
+            <p className="projName SubText">
+              Project name: {data?.project_name}
+            </p>
           </>
         ) : (
           <>
@@ -79,13 +91,16 @@ function HardenTopper({
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <p className="topper-name SubText">Name</p>
-        <div >
+        <div>
           {/* <input className="topper-search" placeholder="Type to search..." /> */}
 
-          <MyButton className="topper-btn" onClick={() => {
-            setIsPressHarden(true);
-            // setServerId(serverId);
-          }}
+          <MyButton
+            className="topper-btn"
+            onClick={() => {
+              setIsPressHarden(true);
+              onOpen();
+              // console.log("Hardening");
+            }}
             isDisabled={Object.keys(checkData).length != 0 ? false : true}
           >
             Hardening

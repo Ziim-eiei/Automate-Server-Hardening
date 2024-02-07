@@ -7,10 +7,23 @@ import { NextUIProvider } from "@nextui-org/react";
 import CreateProject from "./pages/CreateProject.jsx";
 import ManageProject from "./pages/ManageProject.jsx";
 import ManageServer from "./pages/ManageServer.jsx";
+import Home from "./pages/Home.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/create",
+    element: <CreateProject />,
+  },
+  {
+    path: "/create/:state",
+    element: <CreateProject />,
+  },
+  {
+    path: "/create/:state/:project_id",
     element: <CreateProject />,
   },
   {

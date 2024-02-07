@@ -3,7 +3,7 @@ import "../css/Card.css";
 import { SideBarData } from "./SideBarData";
 import { useNavigate } from "react-router-dom";
 
-function SideBar() {
+function SideBar({ serverId }) {
   const navigate = useNavigate();
   return (
     <span className="sidebar">
@@ -13,10 +13,10 @@ function SideBar() {
           return (
             <li
               key={key}
-              className="row SubText"
+              className="row SubText cursor-pointer"
               onClick={() => {
-                if (val.link == "/hardening") window.location.href = val.link;
-                else navigate(val.link);
+                if (val.link == "/hardening" && serverId != null) {
+                } else navigate(val.link);
               }}
             >
               <div id="icon">{val.icon}</div>

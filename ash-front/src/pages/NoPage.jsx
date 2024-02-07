@@ -1,5 +1,9 @@
-export default function Test() {
-    return <>
-     <h1>404 Not found</h1>
+export default function NotFound() {
+  return (
+    <>
+      <h1 className="text-3xl font-bold underline text-white">
+        404 นะครับ ฝากทำด้วยครับ
+      </h1>
     </>
-  }
+  );
+}

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Card, CardBody, Checkbox, Input } from "@nextui-org/react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
-import { color } from "framer-motion";
 import "../css/Card.css";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 function HardenContent({
   setChangeTopic,
@@ -12,9 +12,21 @@ function HardenContent({
   checkData,
   setCheckData,
   serverId,
+  run,
+  setRun,
 }) {
   const [name, setName] = useState("");
   const [history, setHistory] = useState({});
+  // const selectData = useRef({});
+  useEffect(() => {
+    if (run) {
+      localStorage.removeItem(name);
+      localStorage.removeItem(name + "-history");
+      setCheckData({});
+      setHistory({});
+      setRun(false);
+    }
+  }, [run]);
   useEffect(() => {
     async function getServer() {
       let test_name = "";
@@ -47,36 +59,73 @@ function HardenContent({
     "1.2.3": 15,
   };
   const info_value = [];
-  const handleCheck = (no, value) => {
+  const handleCheck = (no, value, selectAll = false) => {
+    const key = `rule_${no.replace(/\./g, "_")}`;
+    // console.log(history);
+    if (selectAll == false) {
+      history[key] = value;
+      setHistory({ ...history });
+      localStorage.setItem(`${name}-history`, JSON.stringify(history));
+      if (!checkData.hasOwnProperty(key)) {
+        checkData[key] = true;
+        setCheckData(checkData);
+        localStorage.setItem(name, JSON.stringify(checkData));
+        if (!checkData[`rule_${no.replace(/\./g, "_")}_value`]) {
+          checkData[`rule_${no.replace(/\./g, "_")}_value`] = suggest_value[no];
+          setCheckData(checkData);
+          localStorage.setItem(name, JSON.stringify(checkData));
+        }
+      } else {
+        if (checkData[key + "_value"]) {
+          delete history[key + "_value"];
+          setHistory({ ...history });
+          localStorage.setItem(`${name}-history`, JSON.stringify(history));
+          delete checkData[key + "_value"];
+        }
+        delete checkData[key];
+        setCheckData(checkData);
+        localStorage.setItem(name, JSON.stringify(checkData));
+        const data = JSON.parse(localStorage.getItem(name));
+        if (Object.keys(data) == 0) {
+          setCheckData({});
+          localStorage.removeItem(name);
+        }
+      }
+    } else {
+      //delete all
+      if (checkSelectedAll() > 0) {
+        history[key] = value;
+        setHistory({ ...history });
+        localStorage.setItem(`${name}-history`, JSON.stringify(history));
+        if (checkData[key + "_value"]) {
+          delete history[key + "_value"];
+          setHistory({ ...history });
+          localStorage.setItem(`${name}-history`, JSON.stringify(history));
+          delete checkData[key + "_value"];
+        }
+        delete checkData[key];
+        setCheckData(checkData);
+        localStorage.setItem(name, JSON.stringify(checkData));
+        const data = JSON.parse(localStorage.getItem(name));
+        if (Object.keys(data) == 0) {
+          setCheckData({});
+          localStorage.removeItem(name);
+        }
+      }
+    }
+  };
+  const handleCheckAll = (no, value) => {
     const key = `rule_${no.replace(/\./g, "_")}`;
     history[key] = value;
     setHistory({ ...history });
     localStorage.setItem(`${name}-history`, JSON.stringify(history));
-    // console.log(history);
-    if (!checkData.hasOwnProperty(key)) {
-      checkData[key] = true;
+    checkData[key] = true;
+    setCheckData(checkData);
+    localStorage.setItem(name, JSON.stringify(checkData));
+    if (!checkData[`rule_${no.replace(/\./g, "_")}_value`]) {
+      checkData[`rule_${no.replace(/\./g, "_")}_value`] = suggest_value[no];
       setCheckData(checkData);
       localStorage.setItem(name, JSON.stringify(checkData));
-      if (!checkData[`rule_${no.replace(/\./g, "_")}_value`]) {
-        checkData[`rule_${no.replace(/\./g, "_")}_value`] = suggest_value[no];
-        setCheckData(checkData);
-        localStorage.setItem(name, JSON.stringify(checkData));
-      }
-    } else {
-      if (checkData[key + "_value"]) {
-        delete history[key + "_value"];
-        setHistory({ ...history });
-        localStorage.setItem(`${name}-history`, JSON.stringify(history));
-        delete checkData[key + "_value"];
-      }
-      delete checkData[key];
-      setCheckData(checkData);
-      localStorage.setItem(name, JSON.stringify(checkData));
-      const data = JSON.parse(localStorage.getItem(name));
-      if (Object.keys(data) == 0) {
-        setCheckData({});
-        localStorage.removeItem(name);
-      }
     }
   };
   const handleValue = (no, value) => {
@@ -103,7 +152,6 @@ function HardenContent({
     );
     setHistory(history);
   }, [history]);
-  // useEffect(() => {
 
   const render = (d) => {
     return (
@@ -126,13 +174,27 @@ function HardenContent({
                 d.benchmark_no + " " + d.benchmark_name &&
                 topic_value.find((t) => t == d.benchmark_no) &&
                 checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
-                  <>{d.benchmark_no + " " + d.benchmark_name }  <p style={{color:"aqua", display:"inline"}}>[Editable]</p></>
+                  <>
+                    {d.benchmark_no + " " + d.benchmark_name}{" "}
+                    <p style={{ color: "aqua", display: "inline" }}>
+                      [Editable]
+                    </p>
+                  </>
                 ) : (
                   d.benchmark_no + " " + d.benchmark_name
                 )
               }
               startContent={
-                name != "" && d.benchmark_detail && d.benchmark_no != "2.1" ? (
+                name != "" &&
+                d.benchmark_detail &&
+                ![
+                  "2.1",
+                  "2.3.3",
+                  "2.3.5",
+                  "2.3.12",
+                  "2.3.14",
+                  "2.3.16",
+                ].includes(d.benchmark_no) ? (
                   <Checkbox
                     onChange={(e) => {
                       handleCheck(d.benchmark_no, e.target.checked);
@@ -154,7 +216,7 @@ function HardenContent({
                     <Input
                       type="number"
                       classNames={{
-                        inputWrapper: "h-unit-10 w-[4.5rem]",
+                        inputWrapper: "h-unit-9 min-h-unit-6 w-[4rem]",
                       }}
                       min="1"
                       max="999"
@@ -189,7 +251,12 @@ function HardenContent({
             }}
           >
             <CardBody>
-              {name != "" && d.benchmark_detail && d.benchmark_no != "2.1" ? (
+              {name != "" &&
+              d.benchmark_detail &&
+              d.benchmark_detail &&
+              !["2.1", "2.3.3", "2.3.5", "2.3.12", "2.3.14", "2.3.16"].includes(
+                d.benchmark_no
+              ) ? (
                 <p className="content-card ">
                   {/* <input
                  type="checkbox"
@@ -262,13 +329,78 @@ function HardenContent({
       </>
     );
   };
-
-  // }, [checkData]);
+  // function showSelectedAll() {
+  //   let countSelected = 0;
+  //   let count = 0;
+  //   const check_keys = newData.map((d) => {
+  //     return `rule_${d.benchmark_no.replace(/\./g, "_")}`;
+  //   });
+  //   countSelected = check_keys.length;
+  //   check_keys.map((key) => {
+  //     if (checkData[key]) {
+  //       count++;
+  //     }
+  //   });
+  //   return count === countSelected;
+  // }
+  function checkSelectedAll() {
+    let countSelected;
+    let count = 0;
+    const check_keys = newData.map((d) => {
+      return `rule_${d.benchmark_no.replace(/\./g, "_")}`;
+    });
+    countSelected = check_keys.length;
+    check_keys.map((key) => {
+      if (checkData[key]) {
+        count++;
+      }
+    });
+    return count;
+  }
+  const checkSelectedTopic = useRef(false);
   return (
     <div
       className="text-white flex flex-col content"
       style={{ whiteSpace: "pre-wrap" }}
     >
+      {serverId && topic.length > 2 ? (
+        topic[topic.length - 1]["name"] == "Security Options" ? null : (
+          <Checkbox
+            onChange={(e) => {
+              if (checkSelectedAll() == 0) {
+                checkSelectedTopic.current = false;
+              } else {
+                checkSelectedTopic.current = true;
+              }
+              if (checkSelectedTopic.current == false) {
+                newData.map((d) => {
+                  handleCheckAll(d.benchmark_no, e.target.checked, true);
+                });
+                checkSelectedTopic.current = true;
+              } else {
+                newData.map((d) => {
+                  handleCheck(d.benchmark_no, e.target.checked, true);
+                });
+              }
+            }}
+            isSelected={checkSelectedAll() > 0 ? true : false}
+            icon={
+              checkSelectedAll() > 0 ? (
+                <RemoveIcon sx={{ fontSize: 18 }} />
+              ) : (
+                <></>
+              )
+            }
+          >
+            {checkSelectedAll() > 0 ? (
+              <p className="text-white">Unselect All</p>
+            ) : (
+              <p className="text-white">Select All</p>
+            )}
+          </Checkbox>
+        )
+      ) : null}
+      <br />
       {newData?.map((d) => {
         return <>{render(d)}</>;
       })}
