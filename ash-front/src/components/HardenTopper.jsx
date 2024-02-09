@@ -20,13 +20,19 @@ function HardenTopper({
       if (serverId != null) {
         // console.log("yes");
         // setServerId(serverId);
+        let server_ip = "";
         const server = await fetch(
           `http://localhost:8000/api/servers/${serverId}`
-        ).then((res) => res.json());
+        ).then(async (res) => {
+          const data = await res.json();
+          server_ip = data.server_ip;
+          return data;
+        });
         const project = await fetch(
           `http://localhost:8000/api/projects/${server["project_id"]}`
         ).then((res) => res.json());
-        setData(project);
+        console.log(project);
+        setData(`${project.project_name} - ${server_ip}`);
       } else {
         // serverId("");
         // console.log("no");
@@ -78,9 +84,7 @@ function HardenTopper({
         )}
         {serverId ? (
           <>
-            <p className="projName SubText">
-              Project name: {data?.project_name}
-            </p>
+            <p className="projName SubText">Project name: {data}</p>
           </>
         ) : (
           <>

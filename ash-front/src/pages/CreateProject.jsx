@@ -10,6 +10,7 @@ export default function CreateProject() {
   const navigate = useNavigate();
   const [project, setProject] = useState({ name: "", description: "" });
   const [server, setServer] = useState({ ip: "", username: "", password: "" });
+  const invalidIP = useRef(false);
   const createProjectId = useRef(null);
   const createProject = async () => {
     const dataProject = await fetch("http://localhost:8000/api/projects", {
@@ -23,7 +24,7 @@ export default function CreateProject() {
       }),
     }).then((res) => res.json());
     createProjectId.current = dataProject._id;
-    console.log(dataProject);
+    // console.log(dataProject);
   };
   const createServer = async () => {
     if (project_id || createProjectId.current) {
@@ -39,7 +40,7 @@ export default function CreateProject() {
           server_password: server.password,
         }),
       }).then((res) => res.json());
-      console.log(dataServer);
+      // console.log(dataServer);
     }
   };
   //post project
@@ -49,9 +50,25 @@ export default function CreateProject() {
       case "project":
         return <Project project={project} setProject={setProject} />;
       case "server":
-        return <Server server={server} setServer={setServer} />;
+        return (
+          <Server server={server} setServer={setServer} invalidIP={invalidIP} />
+        );
       default:
         window.location.href = "/error";
+    }
+  }
+  function checkProject() {
+    if (project.name && project.description) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  function checkServer() {
+    if (server.ip && server.username && server.password) {
+      return false;
+    } else {
+      return true;
     }
   }
   return (
@@ -79,6 +96,9 @@ export default function CreateProject() {
                       break;
                   }
                 }}
+                isDisabled={
+                  (checkProject() && checkServer()) || invalidIP.current
+                }
               >
                 Create
               </MyButton>

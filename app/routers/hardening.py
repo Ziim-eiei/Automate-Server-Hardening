@@ -34,14 +34,17 @@ def save_history(output, id):
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]][
         "hardening_job"
     ]
-    # server = monogo_client.find_one({"server_id": ObjectId(id)})
-    # history = server["history"]
-    # print(output)
-    # history.append(output)
-    # print(history)
-    myquery = {"server_id": id}
-    newvalues = {"$set": {"history": output, "status": "success"}}
-    monogo_client.update_one(myquery, newvalues)
+    myquery = {"_id": ObjectId(id)}
+    # print(output.split(b"\n"))
+    check_output = output.split(b"\n")[-3].decode()
+    if "failed=1" in check_output or "unreachable=1" in check_output:
+        newvalues = {"$set": {"history": output, "status": "failed"}}
+        result = monogo_client.update_one(myquery, newvalues)
+    else:
+        newvalues = {"$set": {"history": output, "status": "success"}}
+        result = monogo_client.update_one(myquery, newvalues)
+    if result.modified_count == 0:
+        print("not found")
 
 
 async def run_proc(cmd, id):
@@ -67,7 +70,7 @@ async def run_proc(cmd, id):
                         connected_clients.remove(client)
     except Exception as e:
         print(e)
-    # save_history(result_output, id)
+    save_history(result_output, id)
 
 
 @router.post("/run")
@@ -85,15 +88,19 @@ async def run_job(job: Job):
     render_file = template.render(body_json)
     # print(render_file)
     job = job.model_dump()
+    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]][
+        "hardening_job"
+    ]
+    server = monogo_client.find_one({"_id": ObjectId(job["job_id"])})
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
-    server = monogo_client.find_one({"_id": ObjectId(job["server_id"])})
+    server = monogo_client.find_one({"_id": ObjectId(server["server_id"])})
     # print(server)
     with open(f"{server['path'] + '/hardening/vars'}/main.yml", "w") as file:
         file.write(render_file)
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]][
         "hardening_job"
     ]
-    myquery = {"server_id": job["server_id"]}
+    myquery = {"_id": ObjectId(job["job_id"])}
     newvalues = {
         "$set": {
             "status": "running",
@@ -104,8 +111,10 @@ async def run_job(job: Job):
     monogo_client.update_one(myquery, newvalues)
     # run command
     cmd = f"ansible-playbook -i {server['path']+'/hosts'} {server['path']+'/hardening/tasks/main.yml'}"
+    # cmd += "| sed -nr '/^TASK/{h;n;/^skipping:/{n;b};H;x};p'"
     # print(cmd)
-    asyncio.create_task(run_proc("ls -la && cat main.py", job["server_id"]))
+    # asyncio.create_task(run_proc("ls -la && cat main.py", job["job_id"]))
+    asyncio.create_task(run_proc(cmd, job["job_id"]))
     return {"msg": "running"}
 
 
@@ -114,7 +123,7 @@ async def list_job():
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]][
         "hardening_job"
     ]
-    servers = list(monogo_client.find().limit(10))
+    servers = list(monogo_client.find().sort("run_at", -1))
     return servers
 
 

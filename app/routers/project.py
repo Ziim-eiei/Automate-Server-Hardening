@@ -14,7 +14,7 @@ config = dotenv_values(".env")
 @router.get("/projects", status_code=status.HTTP_200_OK, response_model=List[Project])
 async def list_all_project():
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
-    projects = list(monogo_client.find().limit(10))
+    projects = list(monogo_client.find())
     for p in projects:
         monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
         servers = list(monogo_client.find({"project_id": f"{p['_id']}"}))
@@ -46,11 +46,27 @@ async def create_project(body: Project):
     return body
 
 
-# @router.delete("/projects")
-# async def delete_project():
-#     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
-#     result = monogo_client.drop()
-#     return {"msg": "delete all project"}
+@router.patch("/projects/{project_id}", response_model=ProjectUpdate)
+async def update_project(project_id: Annotated[str, Path(...)], body: ProjectUpdate):
+    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
+    result = monogo_client.find_one(ObjectId(project_id))
+    if result == None:
+        raise HTTPException(status_code=404, detail="not found")
+    body = body.model_dump()
+    if body["project_name"] == "":
+        body["project_name"] = result["project_name"]
+    if body["project_description"] == "":
+        body["project_description"] = result["project_description"]
+    monogo_client.update_one(
+        {"_id": ObjectId(project_id)},
+        {
+            "$set": {
+                "project_name": body["project_name"],
+                "project_description": body["project_description"],
+            }
+        },
+    )
+    return body
 
 
 @router.delete("/projects/{project_id}")

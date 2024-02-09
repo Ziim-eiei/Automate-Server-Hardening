@@ -26,11 +26,11 @@ export const SideBarData = [
     icon: <SettingsOutlinedIcon />,
     link: "/hardening",
   },
-  // {
-  //   title: "Audit History",
-  //   icon: <ManageHistoryOutlinedIcon />,
-  //   link: "/Home",
-  // },
+  {
+    title: "History",
+    icon: <ManageHistoryOutlinedIcon />,
+    link: "/history",
+  },
   // {
   //   title: "Hardening History",
   //   icon: <ManageHistoryOutlinedIcon />,

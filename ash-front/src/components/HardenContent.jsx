@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardBody, Checkbox, Input } from "@nextui-org/react";
+import { Textarea } from "@nextui-org/react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import "../css/Card.css";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -49,7 +50,22 @@ function HardenContent({
   // console.log(name);
   // console.log(history);
 
-  const topic_value = ["1.1.2", "1.1.3", "1.1.4", "1.2.1", "1.2.2", "1.2.3"];
+  const topic_value = [
+    "1.1.2",
+    "1.1.3",
+    "1.1.4",
+    "1.2.1",
+    "1.2.2",
+    "1.2.3",
+    "2.3.1.5",
+    "2.3.1.6",
+    "2.3.6.5",
+    "2.3.7.3",
+    "2.3.7.4",
+    "2.3.7.5",
+    "2.3.7.7",
+    "2.3.9.1",
+  ];
   const suggest_value = {
     "1.1.2": 365,
     "1.1.3": 1,
@@ -57,6 +73,15 @@ function HardenContent({
     "1.2.1": 15,
     "1.2.2": 5,
     "1.2.3": 15,
+    "2.3.1.5": "Admin_ash",
+    "2.3.1.6": "Guest_ash",
+    "2.3.6.5": 30,
+    "2.3.7.3": 900,
+    "2.3.7.4":
+      "You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.\nBy using this IS (which includes any device attached to this IS), you consent to the following conditions:\n\n    - The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations.\n\n    - At any time, the USG may inspect and seize data stored on this IS.\n\n    - Communications using, or data stored on, this IS are not private, are subject to routine monitoring, interception, and search, and may be disclosed or used for any USG-authorized purpose.\n\n    - This IS includes security measures (e.g., authentication and access controls) to protect USG interests--not for your personal benefit or privacy.\n\n    - Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details.",
+    "2.3.7.5": "DoD Notice and Consent Banner",
+    "2.3.7.7": 14,
+    "2.3.9.1": 15,
   };
   const info_value = [];
   const handleCheck = (no, value, selectAll = false) => {
@@ -130,7 +155,9 @@ function HardenContent({
   };
   const handleValue = (no, value) => {
     // console.log(`${no}: ${value}`);
-    value = Math.max(1, Math.min(999, Number(value)));
+    if (typeof value == "number") {
+      value = Math.max(1, Math.min(999, Number(value)));
+    }
     const key = `rule_${no.replace(/\./g, "_")}_value`;
     history[key] = value;
     setHistory({ ...history });
@@ -212,24 +239,77 @@ function HardenContent({
                 <p className="content-detail">
                   <span className="font-bold">Detail:</span>
                   {d.benchmark_detail}
-                  {checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
-                    <Input
-                      type="number"
-                      classNames={{
-                        inputWrapper: "h-unit-9 min-h-unit-6 w-[4rem]",
-                      }}
-                      min="1"
-                      max="999"
-                      value={
-                        checkData[
-                          `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
-                        ]
-                      }
-                      onChange={(e) => {
-                        handleValue(d.benchmark_no, e.target.valueAsNumber);
-                      }}
-                    />
-                  ) : null}
+                  <br />
+                  <br />
+                  {checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`]
+                    ? (function () {
+                        if (["2.3.7.4", "2.3.7.5"].includes(d.benchmark_no)) {
+                          return (
+                            <Textarea
+                              label={`${d.benchmark_name}`}
+                              value={
+                                checkData[
+                                  `rule_${d.benchmark_no.replace(
+                                    /\./g,
+                                    "_"
+                                  )}_value`
+                                ]
+                              }
+                              onChange={(e) => {
+                                handleValue(d.benchmark_no, e.target.value);
+                              }}
+                              className="max-w-xl"
+                            />
+                          );
+                        }
+                        if (["2.3.1.5", "2.3.1.6"].includes(d.benchmark_no)) {
+                          return (
+                            <Input
+                              type="text"
+                              classNames={{
+                                inputWrapper: "h-unit-10 w-[12rem]",
+                              }}
+                              value={
+                                checkData[
+                                  `rule_${d.benchmark_no.replace(
+                                    /\./g,
+                                    "_"
+                                  )}_value`
+                                ]
+                              }
+                              onChange={(e) => {
+                                handleValue(d.benchmark_no, e.target.value);
+                              }}
+                            />
+                          );
+                        } else {
+                          return (
+                            <Input
+                              type="number"
+                              classNames={{
+                                inputWrapper: "h-unit-10 w-[4.5rem]",
+                              }}
+                              min="1"
+                              max="999"
+                              value={
+                                checkData[
+                                  `rule_${d.benchmark_no.replace(
+                                    /\./g,
+                                    "_"
+                                  )}_value`
+                                ]
+                              }
+                              onChange={(e) => {
+                                handleValue(
+                                  d.benchmark_no,
+                                  e.target.valueAsNumber
+                                );
+                              }}
+                            />
+                          );
+                        }
+                      })()
+                    : null}
                 </p>
               ) : (
                 <>
@@ -258,16 +338,6 @@ function HardenContent({
                 d.benchmark_no
               ) ? (
                 <p className="content-card ">
-                  {/* <input
-                 type="checkbox"
-                 onChange={(e) => {
-                   handleCheck(d.benchmark_no, e.target.checked);
-                 }}
-                 value={history}
-                 checked={
-                   history[`rule_${d.benchmark_no.replace(/\./g, "_")}`]
-                 }
-               /> */}
                   <Checkbox
                     onChange={(e) => {
                       handleCheck(d.benchmark_no, e.target.checked);
@@ -288,61 +358,51 @@ function HardenContent({
                   {d.benchmark_detail}
                 </p>
               ) : null}
-              {topic_value.find((t) => t == d.benchmark_no) &&
+              {/* {topic_value.find((t) => t == d.benchmark_no) &&
               checkData[`rule_${d.benchmark_no.replace(/\./g, "_")}`] ? (
                 <p className=" text-black/90 text-[1rem]">
-                  {/* <input
-                 type="number"
-                 onChange={(e) => {
-                   handleValue(d.benchmark_no, e.target.valueAsNumber);
-                 }}
-                 value={
-                   checkData[
-                     `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
-                   ]
-                 }
-                 min="1"
-                 max="999"
-               /> */}
                   <br />
-                  <Input
-                    type="number"
-                    classNames={{
-                      inputWrapper: "h-unit-10 w-[4.5rem]",
-                    }}
-                    min="1"
-                    max="999"
-                    value={
-                      checkData[
-                        `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
-                      ]
-                    }
-                    onChange={(e) => {
-                      handleValue(d.benchmark_no, e.target.valueAsNumber);
-                    }}
-                  />
+                  {["2.3.1.5", "2.3.1.6"].includes(t) ? (
+                    <Input
+                      type="email"
+                      classNames={{
+                        inputWrapper: "h-unit-10 w-[4.5rem]",
+                      }}
+                      value={
+                        checkData[
+                          `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
+                        ]
+                      }
+                      onChange={(e) => {
+                        handleValue(d.benchmark_no, e.target.value);
+                      }}
+                    />
+                  ) : (
+                    <Input
+                      type="number"
+                      classNames={{
+                        inputWrapper: "h-unit-10 w-[4.5rem]",
+                      }}
+                      min="1"
+                      max="999"
+                      value={
+                        checkData[
+                          `rule_${d.benchmark_no.replace(/\./g, "_")}_value`
+                        ]
+                      }
+                      onChange={(e) => {
+                        handleValue(d.benchmark_no, e.target.valueAsNumber);
+                      }}
+                    />
+                  )}
                 </p>
-              ) : null}
+              ) : null} */}
             </CardBody>
           </Card>
         )}
       </>
     );
   };
-  // function showSelectedAll() {
-  //   let countSelected = 0;
-  //   let count = 0;
-  //   const check_keys = newData.map((d) => {
-  //     return `rule_${d.benchmark_no.replace(/\./g, "_")}`;
-  //   });
-  //   countSelected = check_keys.length;
-  //   check_keys.map((key) => {
-  //     if (checkData[key]) {
-  //       count++;
-  //     }
-  //   });
-  //   return count === countSelected;
-  // }
   function checkSelectedAll() {
     let countSelected;
     let count = 0;

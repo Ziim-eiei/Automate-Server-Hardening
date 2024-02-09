@@ -47,6 +47,7 @@ function AuditCard() {
     newFecth();
   }, [topic]);
   useEffect(() => {
+    let jobID = "";
     async function runHarden() {
       setRun(true);
       const job = await fetch("http://localhost:8000/api/jobs", {
@@ -58,18 +59,23 @@ function AuditCard() {
           server_id: serverId,
           type: "hardening",
         }),
-      }).then((res) => res.json());
-      // console.log(job);
-      const run = await fetch("http://localhost:8000/api/hardening", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          server_id: serverId,
-          topic_select: checkData,
-        }),
-      }).then((res) => res.json());
+      }).then(async (res) => {
+        const data = await res.json();
+        jobID = data["job_id"];
+      });
+      // console.log(jobID);
+      if (ws.current.readyState === 1) {
+        const run = await fetch("http://localhost:8000/api/hardening", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            job_id: jobID,
+            topic_select: checkData,
+          }),
+        }).then((res) => res.json());
+      }
       // console.log(run);
     }
     if (isPressHarden) {
@@ -96,6 +102,7 @@ function AuditCard() {
   useEffect(() => {
     endOfMessageRef.current?.scrollIntoView({
       behavior: "smooth",
+      block: "end",
     });
   }, [message?.length]);
   return (

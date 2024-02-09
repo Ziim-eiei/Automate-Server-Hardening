@@ -1,5 +1,6 @@
 import React from "react";
 import { MyInput } from "./Input";
+import { Textarea } from "@nextui-org/react";
 
 export default function CreateProject({ setProject, project }) {
   const handleNameChange = (e) => {
@@ -22,18 +23,16 @@ export default function CreateProject({ setProject, project }) {
         value={project.name}
         onChange={handleNameChange}
       />
-      <MyInput
-        radius="full"
-        className="w-[20rem] p-2"
-        classNames={{
-          inputWrapper: "h-unit-10",
-        }}
-        label="Project Description :"
-        placeholder="Description"
+      <Textarea
+        className="max-w-xl"
+        placeholder="Your Description....."
         labelPlacement="outside"
-        value={project.description}
-        onChange={handleDescChange}
+        label="Project Description :"
+        onChange={(e) => {
+          handleDescChange(e);
+        }}
       />
+      <br />
     </div>
   );
 }

@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import useSWR, { mutate } from "swr";
 import { useNavigate, useParams } from "react-router-dom";
 import { EditIcon } from "../components/icons/EditIcon.jsx";
 import { DeleteIcon } from "../components/icons/DeleteIcon";
 import { MyButton } from "../components/Button";
+import StorageIcon from "@mui/icons-material/Storage";
 import {
   Table,
   TableHeader,
@@ -12,6 +13,7 @@ import {
   TableRow,
   TableCell,
   Tooltip,
+  Chip,
 } from "@nextui-org/react";
 import {
   Modal,
@@ -22,40 +24,33 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import StorageIcon from "@mui/icons-material/Storage";
 
-export default function ServerContent() {
-  let { projectId } = useParams();
+export default function HistoryContent() {
+  //   let { projectId } = useParams();
   const navigate = useNavigate();
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
-  const { data } = useSWR(
-    `http://localhost:8000/api/projects/${projectId}`,
-    fetcher
-  );
-  // console.log(data);
-  const server_id = useRef(null);
+  const { data } = useSWR(`http://localhost:8000/api/hardening`, fetcher);
+  //   console.log(data);
+  //   const server_id = useRef(null);
   const columns = [
-    { name: "IP", uid: "server_ip" },
-    { name: "USERNAME", uid: "server_username" },
-    { name: "PASSWORD", uid: "server_password" },
-    { name: "ACTION", uid: "actions" },
+    { name: "IP", uid: "name" },
+    { name: "RUN AT", uid: "run_at" },
+    { name: "STATUS", uid: "status" },
   ];
-  async function deleteServer(id) {
-    await fetch(`http://localhost:8000/api/servers/${id}`, {
-      method: "DELETE",
-    }).then((res) => res.json());
-  }
+  const result_history = useRef(null);
+  const time = useRef(null);
   const renderCell = React.useCallback((item, columnKey) => {
     const cellValue = item[columnKey];
     // console.log(`${columnKey}: ${cellValue}`);
     switch (columnKey) {
-      case "server_ip":
+      case "name":
         return (
           <div className="flex flex-col">
             <p
               className="text-bold text-sm select-none text-black underline cursor-pointer w-fit"
               onClick={() => {
-                navigate(`/hardening/${item._id}`);
+                onOpen();
+                result_history.current = item["history"];
               }}
             >
               <StorageIcon />
@@ -63,21 +58,52 @@ export default function ServerContent() {
             </p>
           </div>
         );
-      case "server_username":
+      case "run_at":
+        const utcDateString = cellValue;
+        // const utcDateString = "2023-06-29T16:45:06.387Z"; // UTC date string (example)
+        const utcDateWithoutMillis = utcDateString.slice(0, -5) + "Z";
+        const utcDate = new Date(utcDateWithoutMillis);
+        // console.log("UTC Date:", utcDate.toISOString());
+
+        // Step 2:
+        const offsetMinutes = utcDate.getTimezoneOffset();
+        // console.log("Time Zone Offset (minutes):", offsetMinutes);
+
+        // Step 3:
+        const localTime = new Date(
+          utcDate.getTime() - offsetMinutes * 60 * 1000
+        );
+        // console.log("Local Time:", localTime.toISOString());
+        const utc_format = localTime
+          .toISOString()
+          .slice(0, -5)
+          .replace("T", " ")
+          .replace("-", "/")
+          .replace("-", "/");
+        let date = utc_format.split(" ")[0];
+        date = date.split("/").reverse().join("/");
+        time.current = date + " " + utc_format.split(" ")[1];
         return (
           <div className="flex flex-col">
             <p className="text-bold text-sm select-none text-black">
-              {cellValue}
+              {time?.current}
             </p>
           </div>
         );
-      case "server_password":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-sm select-none text-black">
-              {cellValue}
-            </p>
-          </div>
+      case "status":
+        return cellValue === "success" ? (
+          <Chip
+            className="select-none"
+            color="success"
+            size="sm"
+            variant="flat"
+          >
+            {cellValue}
+          </Chip>
+        ) : (
+          <Chip className="select-none" color="danger" size="sm" variant="flat">
+            {cellValue}
+          </Chip>
         );
       case "actions":
         return (
@@ -108,22 +134,6 @@ export default function ServerContent() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <div className="p-5">
-      <p>Project Description: {data?.project_description}</p>
-      <br />
-      {data?.server?.length ? (
-        <div>
-          <MyButton
-            onClick={() => {
-              navigate(`/create/server/${projectId}`);
-            }}
-          >
-            Create server
-          </MyButton>
-          <br />
-          <br />
-        </div>
-      ) : null}
-
       <Table
         aria-label="Example table with custom cells"
         selectionMode="single"
@@ -141,17 +151,10 @@ export default function ServerContent() {
           )}
         </TableHeader>
         <TableBody
-          items={data?.server ? data.server : []}
+          items={data ? data : []}
           emptyContent={
             <div>
               <p>Don't have data</p>
-              <MyButton
-                onClick={() => {
-                  navigate(`/create/server/${projectId}`);
-                }}
-              >
-                Create server
-              </MyButton>
             </div>
           }
         >
@@ -164,45 +167,31 @@ export default function ServerContent() {
           )}
         </TableBody>
       </Table>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        scrollBehavior="inside"
+        size="5xl"
+      >
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Delete Server
+                Result of server
               </ModalHeader>
               <ModalBody>
-                <p>Are you sure to delete this server?</p>
+                <p className="whitespace-pre-wrap text-left text-black">
+                  {result_history.current}
+                </p>
               </ModalBody>
               <ModalFooter>
                 <Button
                   color="danger"
                   onPress={() => {
-                    deleteServer(server_id.current);
-                    mutate(
-                      `http://localhost:8000/api/projects/${projectId}`,
-                      async (data) => {
-                        return {
-                          ...data,
-                          server: data.server.filter(
-                            (item) => item._id !== server_id.current
-                          ),
-                        };
-                      },
-                      { revalidate: true }
-                    );
                     onClose();
                   }}
                 >
-                  Yes
-                </Button>
-                <Button
-                  color="primary"
-                  onPress={() => {
-                    onClose();
-                  }}
-                >
-                  No
+                  Close
                 </Button>
               </ModalFooter>
             </>

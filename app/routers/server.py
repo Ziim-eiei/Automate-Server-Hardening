@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Path, Query
+from fastapi import APIRouter, status, Path, HTTPException
 from dotenv import dotenv_values
 from pymongo import MongoClient
 from jinja2 import Environment, FileSystemLoader
@@ -15,7 +15,7 @@ config = dotenv_values(".env")
 @router.get("/servers", response_model=List[Server])
 async def list_all_server():
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
-    servers = list(monogo_client.find().limit(10))
+    servers = list(monogo_client.find())
     return servers
 
 
@@ -38,7 +38,7 @@ async def create_server(body: Server):
     body["_id"] = result.inserted_id
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
     result = monogo_client.find_one(ObjectId(body["project_id"]))
-    path = f"./job/{result['project_name'] +'_'+ str(body['_id'])}"
+    path = f"./job/{str(body['_id'])}"
     os.makedirs(path)
     os.mkdir(path + "/hardening")
     os.mkdir(path + "/audit")
@@ -58,12 +58,29 @@ async def create_server(body: Server):
     return body
 
 
-# @router.delete("/servers")
-# async def delete_all_server():
-#     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
-#     result = monogo_client.drop()
-#     # shutil.rmtree("./job")
-#     return {"msg": "delete all server"}
+@router.patch("/servers/{server_id}", response_model=ServerUpdate)
+async def update_server(server_id: Annotated[str, Path(...)], body: ServerUpdate):
+    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
+    result = monogo_client.find_one(ObjectId(server_id))
+    if result == None:
+        raise HTTPException(status_code=404, detail="not found")
+    body = body.model_dump()
+    if body["server_ip"] == "":
+        body["server_ip"] = result["server_ip"]
+    if body["server_username"] == "":
+        body["server_username"] = result["server_username"]
+    if body["server_password"] == "":
+        body["server_password"] = result["server_password"]
+    myquery = {"_id": ObjectId(server_id)}
+    newvalues = {
+        "$set": {
+            "server_ip": body["server_ip"],
+            "server_username": body["server_username"],
+            "server_password": body["server_password"],
+        }
+    }
+    monogo_client.update_one(myquery, newvalues)
+    return body
 
 
 @router.delete("/servers/{server_id}")

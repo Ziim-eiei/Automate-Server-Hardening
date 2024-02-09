@@ -8,6 +8,7 @@ import CreateProject from "./pages/CreateProject.jsx";
 import ManageProject from "./pages/ManageProject.jsx";
 import ManageServer from "./pages/ManageServer.jsx";
 import Home from "./pages/Home.jsx";
+import HistoryPage from "./pages/HistoryPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
   {
     path: "/hardening/:serverId",
     element: <AuditPage />,
+  },
+  {
+    path: "/history",
+    element: <HistoryPage />,
   },
   {
     path: "*",

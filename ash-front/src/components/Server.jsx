@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useRef } from "react";
 import { MyInput } from "./Input";
 
-export default function Server({ server, setServer }) {
+export default function Server({ server, setServer, invalidIP }) {
+  function checkIPFormat(ip) {
+    const pattern = new RegExp(
+      /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+    );
+    return !pattern.test(ip);
+  }
+  const message = useRef("");
   const handleIpChange = (e) => {
+    if (checkIPFormat(e.target.value) && e.target.value !== "") {
+      message.current = "Invalid IP address";
+      invalidIP.current = true;
+    } else {
+      invalidIP.current = false;
+      message.current = "";
+    }
     setServer({ ...server, ip: e.target.value });
   };
   const handleUsernameChange = (e) => {
@@ -24,6 +38,8 @@ export default function Server({ server, setServer }) {
         placeholder="Example: 192.168.x.x"
         value={server.ip}
         onChange={handleIpChange}
+        errorMessage={message.current}
+        isInvalid={message.current !== ""}
       />
       <MyInput
         radius="full"
