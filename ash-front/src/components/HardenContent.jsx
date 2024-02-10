@@ -417,49 +417,64 @@ function HardenContent({
     });
     return count;
   }
+  function checkAmount() {
+    return Object.keys(checkData).filter((key) => !key.includes("_value"))
+      .length;
+  }
   const checkSelectedTopic = useRef(false);
   return (
     <div
       className="text-white flex flex-col content"
       style={{ whiteSpace: "pre-wrap" }}
     >
+      <p className="text-[18px] font-bold">
+        Selected{" "}
+        <span className={checkAmount() > 0 ? "text-[aqua]" : ""}>
+          {checkAmount()}
+        </span>{" "}
+        of 109 topic
+      </p>
+      <br />
       {serverId && topic.length > 2 ? (
         topic[topic.length - 1]["name"] == "Security Options" ? null : (
-          <Checkbox
-            onChange={(e) => {
-              if (checkSelectedAll() == 0) {
-                checkSelectedTopic.current = false;
-              } else {
-                checkSelectedTopic.current = true;
+          <>
+            <Checkbox
+              onChange={(e) => {
+                if (checkSelectedAll() == 0) {
+                  checkSelectedTopic.current = false;
+                } else {
+                  checkSelectedTopic.current = true;
+                }
+                if (checkSelectedTopic.current == false) {
+                  newData.map((d) => {
+                    handleCheckAll(d.benchmark_no, e.target.checked, true);
+                  });
+                  checkSelectedTopic.current = true;
+                } else {
+                  newData.map((d) => {
+                    handleCheck(d.benchmark_no, e.target.checked, true);
+                  });
+                }
+              }}
+              isSelected={checkSelectedAll() > 0 ? true : false}
+              icon={
+                checkSelectedAll() > 0 ? (
+                  <RemoveIcon sx={{ fontSize: 18 }} />
+                ) : (
+                  <></>
+                )
               }
-              if (checkSelectedTopic.current == false) {
-                newData.map((d) => {
-                  handleCheckAll(d.benchmark_no, e.target.checked, true);
-                });
-                checkSelectedTopic.current = true;
-              } else {
-                newData.map((d) => {
-                  handleCheck(d.benchmark_no, e.target.checked, true);
-                });
-              }
-            }}
-            isSelected={checkSelectedAll() > 0 ? true : false}
-            icon={
-              checkSelectedAll() > 0 ? (
-                <RemoveIcon sx={{ fontSize: 18 }} />
+            >
+              {checkSelectedAll() > 0 ? (
+                <p className="text-white">Unselect All</p>
               ) : (
-                <></>
-              )
-            }
-          >
-            {checkSelectedAll() > 0 ? (
-              <p className="text-white">Unselect All</p>
-            ) : (
-              <p className="text-white">Select All</p>
-            )}
-          </Checkbox>
+                <p className="text-white">Select All</p>
+              )}
+            </Checkbox>
+          </>
         )
       ) : null}
+
       <br />
       {newData?.map((d) => {
         return <>{render(d)}</>;

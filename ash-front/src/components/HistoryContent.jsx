@@ -60,20 +60,12 @@ export default function HistoryContent() {
         );
       case "run_at":
         const utcDateString = cellValue;
-        // const utcDateString = "2023-06-29T16:45:06.387Z"; // UTC date string (example)
         const utcDateWithoutMillis = utcDateString.slice(0, -5) + "Z";
         const utcDate = new Date(utcDateWithoutMillis);
-        // console.log("UTC Date:", utcDate.toISOString());
-
-        // Step 2:
         const offsetMinutes = utcDate.getTimezoneOffset();
-        // console.log("Time Zone Offset (minutes):", offsetMinutes);
-
-        // Step 3:
         const localTime = new Date(
           utcDate.getTime() - offsetMinutes * 60 * 1000
         );
-        // console.log("Local Time:", localTime.toISOString());
         const utc_format = localTime
           .toISOString()
           .slice(0, -5)

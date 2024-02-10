@@ -42,6 +42,7 @@ export default function ProjectContent() {
     }).then((res) => res.json());
   };
   const project_id = useRef(null);
+  const time = useRef(null);
   const renderCell = React.useCallback((item, columnKey) => {
     const cellValue = item[columnKey];
     // console.log(`${columnKey}: ${cellValue}`);
@@ -61,10 +62,26 @@ export default function ProjectContent() {
           </div>
         );
       case "created_at":
+        const utcDateString = cellValue;
+        const utcDateWithoutMillis = utcDateString.slice(0, -5) + "Z";
+        const utcDate = new Date(utcDateWithoutMillis);
+        const offsetMinutes = utcDate.getTimezoneOffset();
+        const localTime = new Date(
+          utcDate.getTime() - offsetMinutes * 60 * 1000
+        );
+        const utc_format = localTime
+          .toISOString()
+          .slice(0, -5)
+          .replace("T", " ")
+          .replace("-", "/")
+          .replace("-", "/");
+        let date = utc_format.split(" ")[0];
+        date = date.split("/").reverse().join("/");
+        time.current = date + " " + utc_format.split(" ")[1];
         return (
           <div className="">
             <p className="text-bold text-sm select-none text-black">
-              {cellValue}
+              {time?.current}
             </p>
           </div>
         );

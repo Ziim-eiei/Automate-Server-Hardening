@@ -26,6 +26,7 @@ function AuditCard() {
   const [checkData, setCheckData] = useState({});
   const [isPressHarden, setIsPressHarden] = useState(false);
   const [run, setRun] = useState(false);
+  const isSummary = useRef(false);
   // const [serverId, setServerId] = useState("");
 
   // console.log(serverId);
@@ -144,6 +145,7 @@ function AuditCard() {
             isDismissable={false}
             scrollBehavior="inside"
             size="5xl"
+            id="modal-1"
           >
             <ModalContent>
               {(onClose) => (

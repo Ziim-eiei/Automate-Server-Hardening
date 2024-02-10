@@ -31,7 +31,7 @@ function HardenTopper({
         const project = await fetch(
           `http://localhost:8000/api/projects/${server["project_id"]}`
         ).then((res) => res.json());
-        console.log(project);
+        // console.log(project);
         setData(`${project.project_name} - ${server_ip}`);
       } else {
         // serverId("");
@@ -107,7 +107,7 @@ function HardenTopper({
             }}
             isDisabled={Object.keys(checkData).length != 0 ? false : true}
           >
-            Hardening
+            Start
           </MyButton>
         </div>
       </div>
