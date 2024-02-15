@@ -1,11 +1,11 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { Card, CardBody } from "@nextui-org/react";
 import { MyButton } from "../components/Button";
 import Project from "../components/Project";
 import Server from "../components/Server";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function CreateProject() {
+export default function EditPage() {
   let { state, project_id } = useParams();
   const navigate = useNavigate();
   const [project, setProject] = useState({ name: "", description: "" });
@@ -24,7 +24,6 @@ export default function CreateProject() {
       }),
     }).then((res) => res.json());
     createProjectId.current = dataProject._id;
-
     // console.log(dataProject);
   };
   const createServer = async () => {
@@ -87,11 +86,11 @@ export default function CreateProject() {
                   switch (state) {
                     case "project":
                       createProject();
-                      navigate("/project");
+                      history.go(-1);
                       break;
                     case "server":
                       createServer();
-                      navigate(`/server/${project_id}`);
+                      history.go(-1);
                       break;
                     default:
                       break;
@@ -101,7 +100,7 @@ export default function CreateProject() {
                   (checkProject() && checkServer()) || invalidIP.current
                 }
               >
-                Create
+                Update
               </MyButton>
             </div>
           </CardBody>
