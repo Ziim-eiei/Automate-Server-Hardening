@@ -41,6 +41,7 @@
     width: 9.5vw;
     height: 6.5vh;
     border-radius: 5px;
+    z-index: 52;
 }
 
 .imgServer {
@@ -48,6 +49,7 @@
     top: -200px;
     left: 170%;
     z-index: 51;
+    background: fixed;
 }
 
 .dot {
