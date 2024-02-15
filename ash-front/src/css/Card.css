@@ -3,10 +3,11 @@
 .CardAudit {
     width: auto;
     height: auto;
-    min-height: 89vh;
+    height: 92h;
     background-color: #27273D;
     color: #FFFFFF;
     align-items: center;
+    margin: 4vh;
 }
 
 .CardBody {
@@ -147,8 +148,8 @@
 .Content-Container {
     grid-area: Content;
     /* background-color: blueviolet; */
-    /* height: 520px;
-    overflow-y: scroll; */
+    /* height: 50px; */
+    /* overflow-y: scroll; */
 }
 
 .content {
@@ -185,9 +186,9 @@
 /*-- Scroll Bar -----------------------------------*/
 
 .example {
-    height: 520px;
+    height: 70vh;
     overflow-y: scroll;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     
 }
 

@@ -9,7 +9,14 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        background: "#0e1625",
+        foreground: "#E8E8FC",
+        lightblue: '#45EDF2',
+        transparent: 'transparent',
+      }
+    },
   },
   darkMode: "class",
   plugins: [nextui()],
