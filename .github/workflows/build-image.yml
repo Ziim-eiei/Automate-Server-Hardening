@@ -35,4 +35,5 @@ jobs:
       - name: delete old packages
         uses: actions/delete-package-versions@v5.0.0
         with:
+          package-name: "automate-server-hardening"
           ignore-versions: "latest"
