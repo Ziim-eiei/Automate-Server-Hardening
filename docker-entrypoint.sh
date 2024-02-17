@@ -23,6 +23,10 @@ EOF
 mongosh < create_user_script.js
 export PATH="/home/ash/.local/bin:$PATH"
 cd /ash/back/
+cat <<EOF > env
+MONGODB_URI=mongodb://ash-db:9LlEukAh85nPMH3vB1Wd@localhost
+DB_NAME=ash
+EOF
 python3 main.py
 }
 DIRECTORY="/home/ash/data"
