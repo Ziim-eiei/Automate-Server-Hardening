@@ -75,7 +75,7 @@ export default function EditPage() {
       }),
     }).then((res) => {
       if (res.status === 200) {
-        navigate(`/server/${id}`);
+        history.go(-1);
       }
     });
   }
@@ -124,8 +124,8 @@ export default function EditPage() {
   }
   return (
     <>
-      <div className="text-white flex justify-center items-center p-10">
-        <Card className="w-fit h-1/2 px-8 bg-gradient-to-tr from-blue-500 to-yellow-500">
+      <div className="text-black flex justify-center items-center p-10">
+        <Card className="w-fit h-1/2 px-8 bg-gradient-to-tr from-blue-500 to-yellow-500 text-black">
           <CardBody>
             <div>{render()}</div>
             <div className="text-right">

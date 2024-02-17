@@ -11,7 +11,7 @@ export default function CreateProject({ setProject, project, edit }) {
   };
   // console.log(project);
   return (
-    <div>
+    <div className="text-black">
       {edit ? (
         <p className="font-bold text-center text-xl">Edit project</p>
       ) : (

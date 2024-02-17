@@ -31,19 +31,19 @@ export default function Home() {
             </NavbarItem>
 
             <NavbarItem>
-              <Link href="/project" color="foreground">
+              <Link href="/project" className="text-foreground2">
                 Project
               </Link>
             </NavbarItem>
 
             <NavbarItem>
-              <Link href="/hardening" color="foreground">
+              <Link href="/hardening" className="text-foreground2">
                 Detail
               </Link>
             </NavbarItem>
 
             <NavbarItem>
-              <Link href="#" color="foreground">
+              <Link href="#" className="text-foreground2">
                 Contact Us
               </Link>
             </NavbarItem>
@@ -60,7 +60,7 @@ export default function Home() {
                 as={Link}
                 href="#"
                 variant="flat"
-                className="text-foreground bg-transparent border-1 border-foreground rounded-md shadow-2xl"
+                className="text-foreground2 bg-transparent border-1 border-foreground2 rounded-md shadow-2xl"
               >
                 Learn More
               </Button>

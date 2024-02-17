@@ -12,9 +12,8 @@ module.exports = {
     extend: {
       colors: {
         background: "#0e1625",
-        foreground: "#E8E8FC",
+        foreground2: "#E8E8FC",
         lightblue: '#45EDF2',
-        transparent: 'transparent',
       }
     },
   },
