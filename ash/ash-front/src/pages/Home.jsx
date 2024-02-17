@@ -20,15 +20,7 @@ export default function Home() {
       <div className="homePage">
         <Navbar className="navBarHome" style={{ padding: "0px" }}>
           <NavbarBrand>
-<<<<<<< HEAD
-            <Image
-              width={100}
-              alt="SIT Logo Image"
-              src="../../public/KMUTTSIT.png"
-            />
-=======
             <Image width={100} alt="SIT Logo Image" src="/KMUTTSIT.png" />
->>>>>>> dev
           </NavbarBrand>
 
           <NavbarContent className="sm:flex gap-6 " justify="center">
@@ -94,11 +86,7 @@ export default function Home() {
             <Image
               className="imgServer"
               alt="Server Image"
-<<<<<<< HEAD
-              src="../../public/iconServer.png"
-=======
               src="/iconServer.png"
->>>>>>> dev
             />
             <div class="dot"></div>
           </div>
