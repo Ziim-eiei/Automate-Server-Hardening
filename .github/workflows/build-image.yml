@@ -35,5 +35,7 @@ jobs:
       - name: delete old packages
         uses: actions/delete-package-versions@v5.0.0
         with:
-          package-name: "automate-server-hardening"
-          ignore-versions: "latest"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          package-name: ${{ github.repository }}
+          package-type: "container"
+          min-versions-to-keep: 1
