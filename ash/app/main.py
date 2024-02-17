@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True, log_level="info")
+    uvicorn.run("main:app", reload=True, log_level="info", host="0.0.0.0")
 
 # @app.on_event("startup")
 # def startup_db_client():
