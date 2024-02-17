@@ -28,15 +28,6 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: type=raw,value=latest
-      - name: Cache Docker layers
-        uses: actions/cache@v4.0.0
-        with:
-          path: |
-            /ash/ash-front/package.json
-            /ash/requirements.txt
-          key: ${{ runner.os }}-buildx-${{ hashFiles('/ash/ash-front/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
       - name: Build and push
         uses: docker/build-push-action@v5.1.0
         with:
@@ -44,6 +35,9 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Delete package
         uses: actions/delete-package-versions@v5.0.0
         with:
