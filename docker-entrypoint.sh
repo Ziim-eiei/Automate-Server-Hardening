@@ -1,6 +1,6 @@
 #!/bin/bash
+
 set -e
-# tail -f /dev/null
 run_once(){
 nginx -g 'daemon off;' &
 cd /home/ash
