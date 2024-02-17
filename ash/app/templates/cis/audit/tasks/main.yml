@@ -1,0 +1,66 @@
+---
+- name: Fetch file from server
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Export security configuration
+      win_shell: secedit /export /cfg C:\Windows\Temp\security.cfg
+    - name: Fecth file security.cfg
+      ansible.builtin.fetch:
+        src: C:\Windows\Temp\security.cfg
+        dest: ../../../../audit-file/security.cfg
+        flat: yes
+    - name: Remove file security.cfg
+      win_shell: rm C:\Windows\Temp\security.cfg
+    # - name: Test audit rule 2_3_1_2
+    #   win_shell: |
+    #     $result = try {
+    #         get-itempropertyvalue -path 'HKLM:/SOFTWARE/Microsoft/Windows/CurrentVersion/Policies/System/' -Name NoConnectedUser
+    #       } catch {
+    #         $null
+    #       }
+    #       if ($result -eq $null) {
+    #         exit 0
+    #       }
+    #      $result
+    #   ignore_errors: yes
+    #   register: command_output
+    # - name: Save output to file
+    #   local_action:
+    #     module: copy
+    #     content: "2_3_1_2={{ command_output.stdout }}\n"
+    #     dest: ../../../../audit-file/test-audit.toml
+    # - name: Test audit other rule
+    #   win_shell: |
+    #     $result = try {
+    #         get-itempropertyvalue -path 'HKLM:/SOFTWARE/Microsoft/Windows/CurrentVersion/Policies/System/' -Name DisableAutomaticRestartSignOn
+    #       } catch {
+    #         $null
+    #       }
+    #       if ($result -eq $null) {
+    #         exit 0
+    #       }
+    #     $result
+    #   ignore_errors: yes
+    #   register: command_output
+    # - name: Save output to file
+    #   local_action:
+    #     module: shell
+    #     cmd: printf "other={{ command_output.stdout }}" >> ../../../../audit-file/test-audit.toml
+    # - name: Test audit other rule
+    #   win_shell: |
+    #     $result = try {
+    #         get-itempropertyvalue -path 'HKLM:/SOFTWARE/Microsoft/Windows/CurrentVersion/Policies/System/' -Name DSCAutomationHostEnabled
+    #       } catch {
+    #         $null
+    #       }
+    #       if ($result -eq $null) {
+    #         exit 0
+    #       }
+    #     $result
+    #   ignore_errors: yes
+    #   register: command_output
+    # - name: Save output to file
+    #   local_action:
+    #     module: shell
+    #     cmd: printf "other='%s'" "{{ command_output.stdout | trim }}" >> ../../../../audit-file/test-audit.toml

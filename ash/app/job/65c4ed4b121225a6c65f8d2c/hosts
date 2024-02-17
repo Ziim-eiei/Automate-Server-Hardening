@@ -1,0 +1,7 @@
+[windows]
+23.99.123.23
+[windows:vars]
+ansible_connection=winrm 
+ansible_user=test-cis
+ansible_password=Ep7&05Yyf31c^>jAT{y[
+ansible_winrm_server_cert_validation=ignore

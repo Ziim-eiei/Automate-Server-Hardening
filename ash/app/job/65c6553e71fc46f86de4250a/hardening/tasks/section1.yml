@@ -1,0 +1,105 @@
+---
+- name: "1.1.1 Ensure Enforce password history is set to 24 or more passwords."
+  community.windows.win_security_policy:
+    section: System Access
+    key: PasswordHistorySize
+    value: "{{ win19cis_max_passwords_saved }}"
+    when: win19cis_max_passwords_saved == 24
+  when:
+    - win19cis_rule_1_1_1
+  tags:
+    - rule_1.1.1
+
+- name: "1.1.2 Ensure Maximum password age is set to 365 or fewer days, but not 0"
+  community.windows.win_security_policy:
+    section: System Access
+    key: MaximumPasswordAge
+    value: "{{ win19cis_maximum_password_age }}"
+    when:
+      - win19cis_maximum_password_age <= 365
+      - win19cis_maximum_password_age > 0
+  when:
+    - win19cis_rule_1_1_2
+  tags:
+    - rule_1.1.2
+
+- name: "1.1.3 Ensure Minimum password age is set to 1 or more days"
+  community.windows.win_security_policy:
+    section: System Access
+    key: MinimumPasswordAge
+    value: "{{ win19cis_minimum_password_age }}"
+    when:
+      - win19cis_maximum_password_age <= 999 or
+        win19cis_maximum_password_age > 0
+  when:
+    - win19cis_rule_1_1_3
+  tags:
+    - rule_1.1.3
+
+- name: "1.1.4 Ensure Minimum password length is set to 14 or more characters"
+  community.windows.win_security_policy:
+    section: System Access
+    key: MinimumPasswordLength
+    value: "{{ win19cis_minimum_password_length }}"
+    when: win19cis_maximum_password_age >= 14
+  when:
+    - win19cis_rule_1_1_4
+  tags:
+    - rule_1.1.4
+
+- name: "1.1.5 Ensure Password must meet complexity requirements is set to Enabled."
+  community.windows.win_security_policy:
+    section: System Access
+    key: PasswordComplexity
+    value: 1
+  when:
+    - win19cis_rule_1_1_5
+  tags:
+    - rule_1.1.5
+
+- name: "1.1.7 Ensure Store passwords using reversible encryption is set to Disabled"
+  community.windows.win_security_policy:
+    section: System Access
+    key: ClearTextPassword
+    value: 0
+  when:
+    - win19cis_rule_1_1_7
+  tags:
+    - rule_1.1.7
+
+- name: "1.2.1 Ensure Account lockout duration is set to 15 or more minutes"
+  community.windows.win_security_policy:
+    section: System Access
+    key: LockoutDuration
+    value: "{{ win19cis_account_lockout_duration }}"
+    when: win19cis_account_lockout_duration >= 15
+  when:
+    - win19cis_rule_1_2_1
+  tags:
+    - rule_1.2.1
+
+- name: "1.2.2 Ensure Account lockout threshold is set to 5 or fewer invalid logon attempt(s), but not 0."
+  community.windows.win_security_policy:
+    section: System Access
+    key: LockoutBadCount
+    value: "{{ win19cis_bad_login_lockout_count }}"
+    when:
+      - win19cis_bad_login_lockout_count <= 5
+      - win19cis_bad_login_lockout_count > 0
+  when:
+    - win19cis_rule_1_2_2
+  tags:
+    - rule_1.2.2
+
+- name: "1.2.3 Ensure Reset account lockout counter after is set to 15 or more minutes."
+  community.windows.win_security_policy:
+    section: System Access
+    key: ResetLockoutCount
+    value: "{{ win19cis_account_lockout_counter_reset }}"
+    when:
+      - win19cis_account_lockout_counter_reset >= 15
+      - win19cis_account_lockout_counter_reset <= win19cis_account_lockout_duration
+  when:
+    - win19cis_rule_1_2_3
+  tags:
+    - rule_1.2.3
