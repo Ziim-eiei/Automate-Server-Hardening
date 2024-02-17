@@ -13,9 +13,9 @@ dist-ssr
 *.local
 test-back
 **/__pycache__
-*/cis
-*/audit-file
-*/job
+**/cis
+**/audit-file
+**/job
 
 # Editor directories and files
 .vscode/*

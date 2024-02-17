@@ -9,6 +9,6 @@ This web application allows you to harden your servers based on the CIS Benchmar
 - Select the hardening topics you want to apply
 - Audit your server configuration
 
-## Support
+## Limitaion
 
 - only work with Windows Server 2019
