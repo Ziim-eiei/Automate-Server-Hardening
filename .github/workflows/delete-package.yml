@@ -1,0 +1,15 @@
+name: delete-package
+on: workflow_dispatch
+jobs:
+  delete-package:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Delete package
+        uses: actions/delete-package-versions@v5.0.0
+        with:
+          package-name: "ghcr.io/${{ github.repository }}"
+          package-type: "container"
+          min-versions-to-keep: 1
+          delete-only-untagged-versions: "true"
