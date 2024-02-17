@@ -8,7 +8,7 @@ jobs:
         uses: actions/delete-package-versions@v5.0.0
         with:
           token: ${{ secrets.MY_PAT }}
-          package-name: "automate-server-hardening"
+          package-name: "Automate-Server-Hardening"
           package-type: "container"
           min-versions-to-keep: 1
-          delete-only-untagged-versions: true
+          delete-only-untagged-versions: "true"
