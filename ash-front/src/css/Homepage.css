@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Readex+Pro:wght@160..700&display=swap');
+
+.homePage {
+    /* background: #0E1625; */
+    border: #45EDF2 solid 1px;
+    border-radius: 3vh;
+    padding: 30px 30px 30px 30px;
+    margin: 4vh;
+    height: 92vh;
+    text-align: center;
+}
+
+.navBarHome {
+    /* background-color: #fdfdfd00; */
+    /* z-index: -1; */
+}
+
+.homeContent {
+    margin: 5% 0px 0px 7%;
+}
+
+.homePagetext {
+    color: #E8E8FC;
+    font-size: clamp(4.8vw, 4.8vw, 4.8vw);
+    font-family: "Source Code Pro", monospace;
+    line-height: 1.2;
+    font-weight: bolder;
+    text-align: left;
+}
+
+.homePageBtn {
+    position: fixed;
+    color: #0e1625;
+    background: rgb(69, 237, 242);
+    background: linear-gradient(115deg, rgba(69, 237, 242, 1) 0%, rgba(0, 212, 255, 0.5186449579831933) 100%);
+    font-size: 1.1vw;
+    font-weight: 700;
+    font-family: "Readex Pro", sans-serif;
+    margin-top: 2.5%;
+    width: 9.5vw;
+    height: 6.5vh;
+    border-radius: 5px;
+    z-index: 52;
+}
+
+.imgServer {
+    width: 450px;
+    top: -200px;
+    left: 170%;
+    z-index: 51;
+    background: fixed;
+}
+
+.dot {
+    height: 500px;
+    width: 500px;
+    position: absolute;
+    top: 140px;
+    left: 900px;
+    background-color: #593CA3;
+    border-radius: 50%;
+    display: inline-block;
+    filter: blur(10rem);
+    z-index: 50;
+}
+
+body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
