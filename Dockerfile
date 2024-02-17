@@ -50,6 +50,6 @@ USER $USER
 COPY ash.conf /etc/nginx/conf.d/default.conf
 COPY ./ash/.devcontainer/mongo/cis-benchmark-new.json /home/ash/cis-benchmark-new.json
 COPY docker-entrypoint.sh /ash
-RUN chown ash /ash/docker-entrypoint.sh && chmod +x /ash/docker-entrypoint.sh
+RUN chown ash /ash/docker-entrypoint.sh
 ENTRYPOINT ["/ash/docker-entrypoint.sh"]
 EXPOSE 80 8000
