@@ -112,7 +112,13 @@ export default function ProjectContent() {
             </Tooltip>
             <Tooltip content="Edit project" color="warning">
               <span className="text-lg text-warning-400 cursor-pointer active:opacity-50">
-                <EditIcon />
+                <div
+                  onClick={() => {
+                    navigate(`/edit/project/${item._id}`);
+                  }}
+                >
+                  <EditIcon />
+                </div>
               </span>
             </Tooltip>
             <Tooltip color="danger" content="Delete project">

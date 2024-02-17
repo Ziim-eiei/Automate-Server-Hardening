@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { MyInput } from "./Input";
 
-export default function Server({ server, setServer, invalidIP }) {
+export default function Server({ server, setServer, invalidIP, edit }) {
   function checkIPFormat(ip) {
     const pattern = new RegExp(
       /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
@@ -27,6 +27,11 @@ export default function Server({ server, setServer, invalidIP }) {
   };
   return (
     <div>
+      {edit ? (
+        <p className="font-bold text-center text-xl">Edit server</p>
+      ) : (
+        <p className="font-bold text-center text-xl">Create server</p>
+      )}
       <MyInput
         radius="full"
         className="w-[20rem] p-2"

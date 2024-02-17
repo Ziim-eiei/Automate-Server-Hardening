@@ -9,15 +9,12 @@ import ManageProject from "./pages/ManageProject.jsx";
 import ManageServer from "./pages/ManageServer.jsx";
 import Home from "./pages/Home.jsx";
 import HistoryPage from "./pages/HistoryPage.jsx";
+import EditPage from "./pages/EditPage.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-  },
-  {
-    path: "/create",
-    element: <CreateProject />,
   },
   {
     path: "/create/:state",
@@ -26,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: "/create/:state/:project_id",
     element: <CreateProject />,
+  },
+  {
+    path: "/edit/:state/:id",
+    element: <EditPage />,
   },
   {
     path: "/project",
@@ -59,7 +60,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    {/* <App /> */}
     <NextUIProvider>
       <RouterProvider router={router} />
     </NextUIProvider>

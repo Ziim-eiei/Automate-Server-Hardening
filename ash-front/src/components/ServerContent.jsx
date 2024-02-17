@@ -84,7 +84,13 @@ export default function ServerContent() {
           <div className="relative flex items-center gap-5">
             <Tooltip content="Edit server" color="warning">
               <span className="text-lg text-warning-400 cursor-pointer active:opacity-50">
-                <EditIcon />
+                <div
+                  onClick={() => {
+                    navigate(`/edit/server/${item._id}`);
+                  }}
+                >
+                  <EditIcon />
+                </div>
               </span>
             </Tooltip>
             <Tooltip color="danger" content="Delete server">

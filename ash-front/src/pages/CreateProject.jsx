@@ -77,9 +77,6 @@ export default function CreateProject() {
       <div className="text-white flex justify-center items-center p-10">
         <Card className="w-fit h-1/2 px-8 bg-gradient-to-tr from-blue-500 to-yellow-500">
           <CardBody>
-            <p className="text-center text-black/90 text-xl font-bold">
-              Automate Server Hardening
-            </p>
             <div>{render()}</div>
             <div className="text-right">
               <MyButton
