@@ -35,7 +35,6 @@ jobs:
       - name: delete old packages
         uses: actions/delete-package-versions@v5.0.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           package-name: ${{ github.repository }}
           package-type: "container"
-          min-versions-to-keep: 1
+          delete-only-untagged-versions: "true"
