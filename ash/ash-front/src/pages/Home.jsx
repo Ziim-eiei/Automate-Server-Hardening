@@ -54,7 +54,7 @@ export default function Home() {
               <Button
                 onClick={() => {
                   window.open(
-                    "https://www.cisecurity.org/benchmark/microsoft_windows_server"
+                    "https://github.com/Ziim-eiei/Automate-Server-Hardening"
                   );
                 }}
                 as={Link}

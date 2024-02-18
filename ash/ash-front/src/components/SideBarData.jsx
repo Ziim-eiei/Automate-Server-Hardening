@@ -6,11 +6,11 @@ import StorageIcon from "@mui/icons-material/Storage";
 import FolderIcon from "@mui/icons-material/Folder";
 
 export const SideBarData = [
-  // {
-  //   title: "Home",
-  //   icon: <HomeIcon />,
-  //   link: "/Home",
-  // },
+  {
+    title: "Home",
+    icon: <HomeIcon />,
+    link: "/",
+  },
   {
     title: "Project",
     icon: <FolderIcon />,
