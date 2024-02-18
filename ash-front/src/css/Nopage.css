@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url(/fonts.gstatic.com/s/montserrat/v26/JTUSjIg1_i6t8kCHKm459WRhyzbi.woff2) format('woff2');
+    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+body {
+    padding: 0;
+    margin: 0
+}
+
+#notfound {
+    position: relative;
+    height: 100vh;
+}
+
+#notfound .notfound {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
+}
+
+.notfound {
+    max-width: 767px;
+    width: 100%;
+    line-height: 1.4;
+    text-align: center
+}
+
+.notfound .notfound-404 {
+    position: relative;
+    height: 180px;
+    margin-bottom: 20px;
+    z-index: -1
+}
+
+.notfound .notfound-404 h1 {
+    font-family: montserrat, sans-serif;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-size: 224px;
+    font-weight: 900;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: -12px;
+    color: #0E1625;
+    text-transform: uppercase;
+    text-shadow: -1px -1px 0 #593ca3, 1px 1px 0 #45edf2;
+    letter-spacing: -20px
+}
+
+.notfound .notfound-404 h2 {
+    font-family: montserrat, sans-serif;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 110px;
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    text-shadow: 0 2px 0 #593ca3;
+    letter-spacing: 13px;
+    margin: 0
+}
+
+.notfound a {
+    font-family: montserrat, sans-serif;
+    display: inline-block;
+    text-transform: uppercase;
+    color: #e8e8fc88;
+    text-decoration: none;
+    border: 2px solid;
+    border-radius: 5px;
+    background: 0 0;
+    padding: 10px 40px;
+    font-size: 14px;
+    font-weight: 700;
+    -webkit-transition: .2s all;
+    transition: .2s all
+}
+
+.notfound a:hover {
+    color: #e8e8fc
+}
+
+@media only screen and (max-width:767px) {
+    .notfound .notfound-404 h2 {
+        font-size: 24px
+    }
+}
+
+@media only screen and (max-width:480px) {
+    .notfound .notfound-404 h1 {
+        font-size: 182px
+    }
+}

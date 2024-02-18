@@ -11,10 +11,10 @@
     text-align: center;
 }
 
-.navBarHome {
-    /* background-color: #fdfdfd00; */
-    /* z-index: -1; */
-}
+/* .navBarHome {
+    background-color: #fdfdfd00;
+    z-index: -1;
+} */
 
 .homeContent {
     margin: 5% 0px 0px 7%;
@@ -49,7 +49,7 @@
     top: -200px;
     left: 170%;
     z-index: 51;
-    background: fixed;
+    
 }
 
 .dot {
@@ -58,6 +58,7 @@
     position: absolute;
     top: 140px;
     left: 900px;
+    /* text-align: right; */
     background-color: #593CA3;
     border-radius: 50%;
     display: inline-block;
