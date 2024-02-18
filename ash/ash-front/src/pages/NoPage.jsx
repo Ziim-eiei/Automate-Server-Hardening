@@ -1,9 +1,18 @@
+
+import "../css/Nopage.css";
+
 export default function NotFound() {
   return (
     <>
-      <h1 className="text-3xl font-bold underline text-white">
-        404 นะครับ ฝากทำด้วยครับ
-      </h1>
+      <div id="notfound">
+        <div class="notfound">
+          <div class="notfound-404">
+            <h1>404</h1>
+            <h2>Page not found</h2>
+          </div>
+          <a href="/">Homepage</a>
+        </div>
+      </div>
     </>
   );
 }
