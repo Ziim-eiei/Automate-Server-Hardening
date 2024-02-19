@@ -73,6 +73,8 @@ async def update_project(project_id: Annotated[str, Path(...)], body: ProjectUpd
 async def delete_project(project_id: Annotated[str, Path(...)]):
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
     result = monogo_client.delete_one({"_id": ObjectId(project_id)})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="not found")
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
     servers = list(monogo_client.find({"project_id": project_id}))
     for s in servers:
