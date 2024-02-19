@@ -79,6 +79,12 @@ async def update_server(server_id: Annotated[str, Path(...)], body: ServerUpdate
             "server_password": body["server_password"],
         }
     }
+    env = Environment(loader=FileSystemLoader("./templates/cis"))
+    template = env.get_template("hosts.j2")
+    body_json = jsonable_encoder(body)
+    render_file = template.render(body_json)
+    with open(f"{result['path']}/hosts", "w") as file:
+        file.write(render_file)
     monogo_client.update_one(myquery, newvalues)
     return body
 
