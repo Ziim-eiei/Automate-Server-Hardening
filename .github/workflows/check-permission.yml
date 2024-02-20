@@ -1,4 +1,4 @@
-name: Chack User Permission
+name: Check User Permission
 # Run workflow when a new pull request is opened
 on: workflow_dispatch
 jobs:
@@ -7,12 +7,12 @@ jobs:
     name: A job to check user's permission level
     steps:
       - name: Check access
-        if: ${{ !github.actor == 'OWNER' }}
+        if: ${{ !github.actor == 'Ziim-eiei' }}
         run: |
           echo "Event not triggered by a collaborator."
           exit 1
       - name: Check access
-        if: ${{ github.actor == 'OWNER' }}
+        if: ${{ github.actor == 'Ziim-eiei' }}
         run: |
           echo "Event triggered by a owner."
           exit 0
