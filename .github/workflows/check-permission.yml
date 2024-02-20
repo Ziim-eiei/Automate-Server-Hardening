@@ -3,15 +3,15 @@ name: Check User Permission
 on: workflow_dispatch
 jobs:
   have-permission:
-    if: ${{ github.actor == 'Ziim-eiei' }}
+    if: ${{ github.actor == 'Ziim-eiei'}}
     runs-on: ubuntu-latest
     name: A job to check user's permission level
     steps:
       - name: Check access
         run: |
           echo "Event triggered by user: ${{ github.actor }}"
-  not-have-permission:
-    if: ${{ github.actor != 'Ziim-eiei' }}
+  re-run-job:
+    if: ${{ github.triggering_actor == 'Ziim-eiei' }}
     runs-on: ubuntu-latest
     name: A job to check user's permission level
     steps:
