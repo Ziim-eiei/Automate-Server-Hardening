@@ -2,17 +2,20 @@ name: Check User Permission
 # Run workflow when a new pull request is opened
 on: workflow_dispatch
 jobs:
-  check_user_permission:
+  have-permission:
+    if: ${{ github.actor == 'Ziim-eiei' }}
     runs-on: ubuntu-latest
     name: A job to check user's permission level
     steps:
       - name: Check access
-        if: ${{ !github.actor == 'Ziim-eiei' }}
         run: |
-          echo "Event not triggered by a collaborator."
-          exit 1
+          echo "Event triggered by user: ${{ github.actor }}"
+  not-have-permission:
+    if: ${{ github.actor != 'Ziim-eiei' }}
+    runs-on: ubuntu-latest
+    name: A job to check user's permission level
+    steps:
       - name: Check access
-        if: ${{ github.actor == 'Ziim-eiei' }}
         run: |
-          echo "Event triggered by a owner."
-          exit 0
+          echo "Event triggered by user: ${{ github.actor }}"
+          echo "You don't have permission to run this workflow"
