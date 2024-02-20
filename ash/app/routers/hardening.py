@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, WebSocket
+from fastapi import APIRouter, status, WebSocket, HTTPException
 from starlette.websockets import WebSocketState
 from dotenv import dotenv_values
 from pymongo import MongoClient
@@ -75,12 +75,16 @@ async def run_proc(cmd, id):
 
 @router.post("/run")
 async def run_command(cmd: Command):
+    if not ObjectId.is_valid(cmd.id):
+        raise HTTPException(status_code=400, detail="invalid object id")
     cmd_received = jsonable_encoder(cmd)
     asyncio.create_task(run_proc(cmd_received["cmd"], cmd_received["id"]))
 
 
 @router.post("/hardening")
 async def run_job(job: Job):
+    if not ObjectId.is_valid(job.server_id) or not ObjectId.is_valid(job.job_id):
+        raise HTTPException(status_code=400, detail="invalid object id")
     env = Environment(loader=FileSystemLoader("./templates/cis/hardening/vars"))
     template = env.get_template("main.yml.j2")
     body_json = jsonable_encoder(job)

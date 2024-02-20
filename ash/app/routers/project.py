@@ -26,8 +26,12 @@ async def list_all_project():
     "/projects/{project_id}", status_code=status.HTTP_200_OK, response_model=Project
 )
 async def list_project(project_id: Annotated[str, Path(...)]):
+    if not ObjectId.is_valid(project_id):
+        raise HTTPException(status_code=400, detail="invalid object id")
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
     project = monogo_client.find_one({"_id": ObjectId(project_id)})
+    if project == None:
+        raise HTTPException(status_code=404, detail="not found")
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
     servers = list(monogo_client.find({"project_id": f"{project['_id']}"}))
     if servers == None:
@@ -48,6 +52,8 @@ async def create_project(body: Project):
 
 @router.patch("/projects/{project_id}", response_model=ProjectUpdate)
 async def update_project(project_id: Annotated[str, Path(...)], body: ProjectUpdate):
+    if not ObjectId.is_valid(project_id):
+        raise HTTPException(status_code=400, detail="invalid object id")
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
     result = monogo_client.find_one(ObjectId(project_id))
     if result == None:
@@ -71,6 +77,8 @@ async def update_project(project_id: Annotated[str, Path(...)], body: ProjectUpd
 
 @router.delete("/projects/{project_id}")
 async def delete_project(project_id: Annotated[str, Path(...)]):
+    if not ObjectId.is_valid(project_id):
+        raise HTTPException(status_code=400, detail="invalid object id")
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
     result = monogo_client.delete_one({"_id": ObjectId(project_id)})
     if result.deleted_count == 0:

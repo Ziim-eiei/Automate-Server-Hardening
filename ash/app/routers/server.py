@@ -21,8 +21,12 @@ async def list_all_server():
 
 @router.get("/servers/{server_id}", response_model=Server)
 async def list_server(server_id: Annotated[str, Path(...)]):
+    if not ObjectId.is_valid(server_id):
+        raise HTTPException(status_code=400, detail="invalid object id")
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
     result = monogo_client.find_one(ObjectId(server_id))
+    if result == None:
+        raise HTTPException(status_code=404, detail="not found")
     return result
 
 
@@ -60,6 +64,8 @@ async def create_server(body: Server):
 
 @router.patch("/servers/{server_id}", response_model=ServerUpdate)
 async def update_server(server_id: Annotated[str, Path(...)], body: ServerUpdate):
+    if not ObjectId.is_valid(server_id):
+        raise HTTPException(status_code=400, detail="invalid object id")
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
     result = monogo_client.find_one(ObjectId(server_id))
     if result == None:
@@ -91,6 +97,8 @@ async def update_server(server_id: Annotated[str, Path(...)], body: ServerUpdate
 
 @router.delete("/servers/{server_id}")
 async def delete_server(server_id: Annotated[str, Path(...)]):
+    if not ObjectId.is_valid(server_id):
+        raise HTTPException(status_code=400, detail="invalid object id")
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
     result = monogo_client.find_one(ObjectId(server_id))
     shutil.rmtree(result["path"])
