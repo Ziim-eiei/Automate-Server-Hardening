@@ -1,12 +1,10 @@
 name: build-image
 
-# on:
-#   push:
-#     branches: ["main"]
 on: workflow_dispatch
 
 jobs:
   build-push:
+    if: ${{ github.actor == 'Ziim-eiei' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -47,5 +45,5 @@ jobs:
         with:
           package-name: "Automate-Server-Hardening"
           package-type: "container"
-          min-versions-to-keep: 2
+          min-versions-to-keep: 3
           delete-only-untagged-versions: "true"

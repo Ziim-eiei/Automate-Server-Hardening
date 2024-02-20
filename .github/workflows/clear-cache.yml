@@ -4,8 +4,9 @@ on: workflow_dispatch
 
 jobs:
   clear-caches:
+    if: ${{ github.actor == 'Ziim-eiei' }}
     name: Delete all caches
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     permissions:
       actions: write
     steps:
