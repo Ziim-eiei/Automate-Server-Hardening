@@ -7,12 +7,12 @@ jobs:
     name: A job to check user's permission level
     steps:
       - name: Check access
-        if: ${{ !github.triggering_actor == 'OWNER' }}
+        if: ${{ !github.actor == 'OWNER' }}
         run: |
           echo "Event not triggered by a collaborator."
           exit 1
       - name: Check access
-        if: ${{ github.triggering_actor == 'OWNER' }}
+        if: ${{ github.actor == 'OWNER' }}
         run: |
           echo "Event triggered by a owner."
           exit 0
