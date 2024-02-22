@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Clear caches
         run: |
-          echo ${{ vars }}
+          echo $ADMIN_NAME
   # clear-caches:
   #   name: Delete all caches
   #   runs-on: ubuntu-latest
