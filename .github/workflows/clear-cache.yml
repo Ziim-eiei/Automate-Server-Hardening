@@ -1,6 +1,8 @@
 name: Clear all Github actions caches
 
 on: workflow_dispatch
+env:
+  env_var: ${{ vars.ADMIN }}
 
 jobs:
   test:
