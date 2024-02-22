@@ -7,8 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clear caches
-        run: |
-          echo ${{ vars.MY_NAME }}
+        run: echo "my name is ${{ vars.MY_NAME }}"
   # clear-caches:
   #   name: Delete all caches
   #   runs-on: ubuntu-latest
