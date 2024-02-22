@@ -5,11 +5,11 @@ on: workflow_dispatch
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: ${{ vars.ADMIN }}
+    environment: ${{ vars.MY_NAME }}
     steps:
       - name: Clear caches
         run: |
-          echo $ADMIN_NAME
+          echo $MY_NAME
   # clear-caches:
   #   name: Delete all caches
   #   runs-on: ubuntu-latest
