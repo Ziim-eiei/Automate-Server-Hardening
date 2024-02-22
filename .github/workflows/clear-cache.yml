@@ -3,14 +3,19 @@ name: Clear all Github actions caches
 on: workflow_dispatch
 
 jobs:
-  clear-caches:
-    if: ${{ github.actor }} != ${{ vars.ADMIN_NAME }}
-    name: Delete all caches
+  test:
     runs-on: ubuntu-latest
-    permissions:
-      actions: write
     steps:
       - name: Clear caches
-        uses: easimon/wipe-cache@main
-        with:
-          dry-run: "false"
+        run: |
+          echo ${{ vars }}
+  # clear-caches:
+  #   name: Delete all caches
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     actions: write
+  #   steps:
+  #     - name: Clear caches
+  #       uses: easimon/wipe-cache@main
+  #       with:
+  #         dry-run: "false"
