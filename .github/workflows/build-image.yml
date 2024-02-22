@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   build-push:
-    if: ${{ github.actor == 'Ziim-eiei' }}
+    if: ${{ github.actor }} == ${{ vars.ADMIN_NAME }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
