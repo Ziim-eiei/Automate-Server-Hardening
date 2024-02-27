@@ -87,14 +87,14 @@ async def list_server():
     servers = list(monogo_client.find().limit(10))
     return servers
 
-
+#Show the details of the server
 @router.get("/servers", response_model=List[Server])
 async def list_server():
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
     servers = list(monogo_client.find().limit(10))
     return servers
 
-
+#Create server
 @router.post("/servers", status_code=status.HTTP_201_CREATED, response_model=Server)
 async def run_command(body: Server):
     env = Environment(loader=FileSystemLoader("./templates/cis"))
@@ -117,7 +117,7 @@ async def run_command(body: Server):
     result = monogo_client.insert_one({"server_id": body["_id"], "path": path})
     return body
 
-
+#delete a server followed by id
 @router.delete("/servers")
 async def list_server():
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
@@ -125,7 +125,7 @@ async def list_server():
     shutil.rmtree("./cis")
     return {"msg": "delete all server"}
 
-
+#Show the details of the project
 @router.get("/projects", status_code=status.HTTP_200_OK, response_model=List[Project])
 async def list_project():
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
@@ -136,7 +136,7 @@ async def list_project():
         p["server"] = servers
     return projects
 
-
+#Create project
 @router.post("/projects", status_code=status.HTTP_201_CREATED, response_model=Project)
 async def create_project(body: Project):
     body = body.model_dump()
@@ -146,14 +146,14 @@ async def create_project(body: Project):
     body["_id"] = result.inserted_id
     return body
 
-
+#delete a project followed by id
 @router.delete("/projects")
 async def delete_project():
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["project"]
     result = monogo_client.drop()
     return {"msg": "delete all project"}
 
-
+#Show the topics and basic information from the CIS
 @router.get("/documents", response_model=List[CIS_Benchmark])
 async def list_server():
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]][
@@ -161,3 +161,13 @@ async def list_server():
     ]
     servers = list(monogo_client.find())
     return servers
+
+#Show the result
+@router.get("/audits", response_model=List[Audit_Result])
+async def list_server():
+    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]][
+        "audit_Result"
+    ]
+    servers = list(monogo_client.find())
+    return servers
+
