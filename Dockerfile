@@ -38,8 +38,7 @@ RUN useradd -m -s /bin/bash $USER && \
     chown -R ash:ash /var/lib/mongodb && \
     chown -R ash:ash /var/log/mongodb
 
-
-
+# set up app
 WORKDIR /ash
 COPY --from=build-front /build/dist ./front
 COPY ./ash/app ./back
