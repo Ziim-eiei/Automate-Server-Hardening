@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import uvicorn, logging
-from routers import project, server, hardening, document, job
+from routers import project, server, hardening, document, job, audit
 from fastapi.middleware.cors import CORSMiddleware
 
 # app = FastAPI(docs_url=None, redoc_url=None)
@@ -11,6 +11,7 @@ app.include_router(server.router)
 app.include_router(hardening.router)
 app.include_router(document.router)
 app.include_router(project.router)
+app.include_router(audit.router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # You can replace "*" with your specific frontend's URL

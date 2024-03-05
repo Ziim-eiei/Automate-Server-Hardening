@@ -8,9 +8,9 @@
     - name: Fecth file security.cfg
       ansible.builtin.fetch:
         src: C:\Windows\Temp\security.cfg
-        dest: ../../../../audit-file/security.cfg
+        dest: ../security.cfg
         flat: yes
-    - name: Remove file security.cfg
+    - name: Remove file security.cfg on remote server
       win_shell: rm C:\Windows\Temp\security.cfg
     # - name: Test audit rule 2_3_1_2
     #   win_shell: |

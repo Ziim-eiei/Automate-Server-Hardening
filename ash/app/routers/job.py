@@ -1,12 +1,9 @@
-from fastapi import APIRouter, status, Path, Query
+from fastapi import APIRouter
 from dotenv import dotenv_values
 from pymongo import MongoClient
-from jinja2 import Environment, FileSystemLoader
 from fastapi.encoders import jsonable_encoder
 from models import *
-from typing import List
 from bson.objectid import ObjectId
-import os, shutil
 
 router = APIRouter(prefix="/api")
 config = dotenv_values(".env")

@@ -97,6 +97,9 @@ function AuditCard() {
       // setMessage(...message, e.data);
       setMessage((prev) => [...prev, e.data]);
     };
+    return () => {
+      ws.current.close();
+    };
   }, []);
   const [message, setMessage] = useState([]);
   const endOfMessageRef = useRef(null);
