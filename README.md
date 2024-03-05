@@ -31,4 +31,4 @@ docker run --name ash -d -p 80:80 -p 8000:8000 ghcr.io/ziim-eiei/automate-server
 
 Access web app:
 
-open on browser: [http://localhost](http://locahost)
+open on browser: [http://localhost](http://localhost)
