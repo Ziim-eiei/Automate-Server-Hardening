@@ -6,12 +6,14 @@ This web application allows you to harden your servers based on the CIS Benchmar
 
 ## Features
 
-- Select the hardening topics you want to apply
-- Audit your server configuration
+- Select the hardening topics you want to apply.
+- Audit your server configuration.
 
-## Limitaion
+## Limitaions
 
-- only work with Windows Server 2019
+- Only work with Windows Server 2019.
+- Complete hardening and auditing of account policies and local policies only.
+- Recommend running on localhost only.
 
 ## Quick Start
 
@@ -26,3 +28,7 @@ Run container:
 ```
 docker run --name ash -d -p 80:80 -p 8000:8000 ghcr.io/ziim-eiei/automate-server-hardening:latest
 ```
+
+Access web app:
+
+open on browser: [http://localhost](http://locahost)
