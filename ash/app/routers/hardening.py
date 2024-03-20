@@ -22,8 +22,6 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             await asyncio.sleep(1)
-            # data = await websocket.receive_text()
-            # await websocket.send_text(f"You said: {data}")
     except Exception as e:
         print(e)
     finally:
