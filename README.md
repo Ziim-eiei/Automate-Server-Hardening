@@ -6,14 +6,15 @@ This web application allows you to harden your servers based on the CIS Benchmar
 
 ## Features
 
-- Select the hardening topics you want to apply.
-- Audit your server configuration.
+- Select the hardening topics you want to apply
+- Audit your server configuration
+- Perform automated hardening
 
 ## Limitaions
 
-- Only work with Windows Server 2019.
-- Complete hardening and auditing of account policies and local policies only.
-- Recommend running on localhost only.
+- Only work with Windows Server 2019
+- Complete hardening and auditing of account policies and local policies only
+- Recommend running on localhost only
 
 ## Quick Start
 
