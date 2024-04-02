@@ -130,6 +130,10 @@ export default function HistoryContent() {
         aria-label="Example table with custom cells"
         selectionMode="single"
         color={"primary"}
+        classNames={{
+          base: "max-h-[520px] scroll",
+        }}
+        isHeaderSticky
       >
         <TableHeader columns={columns}>
           {(column) => (

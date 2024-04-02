@@ -221,7 +221,6 @@
     name: SeDenyRemoteInteractiveLogonRight
     users:
       - Guests
-      - Local Account
     action: set
   when:
     - win19cis_rule_2_2_26

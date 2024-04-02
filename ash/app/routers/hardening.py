@@ -28,6 +28,17 @@ async def websocket_endpoint(websocket: WebSocket):
         connected_clients.clear()
 
 
+async def send_message_ws(output):
+    for client in connected_clients:
+        print(client.client_state)
+        if client.client_state == WebSocketState.CONNECTED:
+            logging.debug(f"Sending to client {client}")
+            # time.sleep(0.1)
+            await client.send_text(output.decode())
+        else:
+            connected_clients.remove(client)
+
+
 def save_history(output, id):
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]][
         "hardening_job"
@@ -78,6 +89,28 @@ async def run_command(cmd: Command):
     else:
         cmd_received = jsonable_encoder(cmd)
         asyncio.create_task(run_proc(cmd_received["cmd"], cmd_received["id"]))
+
+
+def run_job_auto(job: Job):
+    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]][
+        "hardening_job"
+    ]
+    myquery = {"_id": ObjectId(job["job_id"])}
+    newvalues = {
+        "$set": {
+            "status": "running",
+            "run_at": datetime.datetime.now(tz=datetime.timezone.utc),
+            "topic_select": job["topic_select"],
+        }
+    }
+    monogo_client.update_one(myquery, newvalues)
+
+    server = monogo_client.find_one({"_id": ObjectId(job["job_id"])})
+    monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["server"]
+    server = monogo_client.find_one({"_id": ObjectId(server["server_id"])})
+    cmd = f"ansible-playbook -i {server['path']+'/hosts'} {server['path']+'/hardening/tasks/main.yml'} -e @{server['path']+'/hardening/vars/main-auto.yml'}"
+    # print(cmd)
+    asyncio.create_task(run_proc(cmd, job["job_id"]))
 
 
 @router.post("/hardening")

@@ -183,7 +183,6 @@ win19cis_domain_member_maximum_password_age: {{ topic_select.rule_2_3_6_5_value 
 win19cis_inactivity_timeout_seconds: {{ topic_select.rule_2_3_7_3_value | default(900) }}
 
 # 2.3.7.4
-
 {% set legal_notice = "|
   You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only.
   By using this IS (which includes any device attached to this IS), you consent to the following conditions:
@@ -198,7 +197,7 @@ win19cis_inactivity_timeout_seconds: {{ topic_select.rule_2_3_7_3_value | defaul
 
     - Notwithstanding the above, using this IS does not constitute consent to PM, LE or CI investigative searching or monitoring of the content of privileged communications, or work product, related to personal representation or services by attorneys, psychotherapists, or clergy, and their assistants. Such communications and work product are private and confidential. See User Agreement for details." %}
 
-win19cis_legal_notice: {{  topic_select.rule_2_3_7_4_value | default(legal_notice) }} 
+win19cis_legal_notice: {{ legal_notice }} 
 
 # 2.3.7.5
 win19cis_legal_notice_caption: {{ topic_select.rule_2_3_7_5_value | default("DoD Notice and Consent Banner") }}
