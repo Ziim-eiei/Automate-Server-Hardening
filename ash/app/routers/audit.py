@@ -112,7 +112,7 @@ def audit_cis(path):
         audit_result["rule_1_1_7"]["value"] = audit_file["System Access"][
             "ClearTextPassword"
         ]
-        audit_result["rule_1_1_6"]["status"] = (
+        audit_result["rule_1_1_7"]["status"] = (
             int(audit_file["System Access"]["ClearTextPassword"]) == 0
         )
         # 1.2.1
