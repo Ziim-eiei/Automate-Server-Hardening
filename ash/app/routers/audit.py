@@ -404,7 +404,7 @@ def audit_cis(path):
             ]
             audit_result["rule_2_2_26"]["status"] = (
                 audit_file["Privilege Rights"]["SeDenyRemoteInteractiveLogonRight"]
-                == f"*S-1-5-113,{guest_sid}"
+                == f"{guest_sid}"
             )
         except:
             audit_result["rule_2_2_26"] = {}
@@ -951,7 +951,7 @@ def audit_cis(path):
             audit_result["rule_2_3_7_4"]["status"] = (
                 audit_file["Registry Values"][
                     "MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\LegalNoticeText"
-                ]
+                ].split(",")[1]
                 != ""
             )
         except:
@@ -968,7 +968,9 @@ def audit_cis(path):
             audit_result["rule_2_3_7_5"]["status"] = (
                 audit_file["Registry Values"][
                     "MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System\\LegalNoticeCaption"
-                ].replace('"', "")
+                ]
+                .replace('"', "")
+                .split(",")[1]
                 != ""
             )
         except:
@@ -1161,6 +1163,23 @@ def audit_cis(path):
             audit_result["rule_2_3_9_4"] = {}
             audit_result["rule_2_3_9_4"]["value"] = "N/A"
             audit_result["rule_2_3_9_4"]["status"] = False
+
+        # 2.3.9.5
+        try:
+            audit_result["rule_2_3_9_5"] = {}
+            audit_result["rule_2_3_9_5"]["value"] = audit_file["Registry Values"][
+                "MACHINE\\System\\CurrentControlSet\\Services\\LanManServer\\Parameters\\SMBServerNameHardeningLevel"
+            ]
+            audit_result["rule_2_3_9_5"]["status"] = (
+                audit_file["Registry Values"][
+                    "MACHINE\\System\\CurrentControlSet\\Services\\LanManServer\\Parameters\\SMBServerNameHardeningLevel"
+                ]
+                == "4,1"
+            )
+        except:
+            audit_result["rule_2_3_9_5"] = {}
+            audit_result["rule_2_3_9_5"]["value"] = "N/A"
+            audit_result["rule_2_3_9_5"]["status"] = False
 
         # 2.3.10.1
         try:
