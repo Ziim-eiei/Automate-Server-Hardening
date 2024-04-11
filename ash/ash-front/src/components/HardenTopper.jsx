@@ -109,6 +109,7 @@ function HardenTopper({
           >
             Start
           </MyButton>
+          <MyButton className="topper-btn">Auto Suggestion</MyButton>
         </div>
       </div>
     </div>

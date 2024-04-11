@@ -21,17 +21,12 @@ def create_hardening_job(job: Job):
     hardening_job = {
         "server_id": job["server_id"],
         "status": "not running",
-        "created_at": datetime.datetime.now(tz=datetime.timezone.utc),
         "name": f"{project['project_name']}-{server['server_ip']}",
     }
     result = monogo_client.insert_one(
         jsonable_encoder(hardening_job, exclude_none=True)
     )
     return result.inserted_id
-
-
-# def create_audit_job():
-#     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]]["audit_job"]
 
 
 @router.post("/jobs")

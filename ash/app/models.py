@@ -62,15 +62,4 @@ class Hardening_Job(BaseModel):
     topic_select: dict = Field(default={})
     status: str = Field(default="")
     run_at: Optional[datetime.datetime] = Field(default=None)
-    created_at: datetime.datetime
     history: str = Field(default="")
-    # path: str = Field(default="")
-
-
-class Audit_Result(BaseModel):
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)
-    server_id: str
-    topic_select: List = Field(default=[])
-    status: str
-    run_at: Optional[datetime.datetime] = Field(default=None)
-    history: str

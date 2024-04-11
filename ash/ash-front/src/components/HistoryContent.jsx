@@ -3,8 +3,12 @@ import useSWR, { mutate } from "swr";
 import { useNavigate, useParams } from "react-router-dom";
 import { EditIcon } from "../components/icons/EditIcon.jsx";
 import { DeleteIcon } from "../components/icons/DeleteIcon";
-import { MyButton } from "../components/Button";
 import StorageIcon from "@mui/icons-material/Storage";
+import { Card, CardBody } from "@nextui-org/react";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import "../css/Card.css";
+import { Accordion, AccordionItem } from "@nextui-org/react";
 import {
   Table,
   TableHeader,
@@ -38,7 +42,72 @@ export default function HistoryContent() {
     { name: "STATUS", uid: "status" },
   ];
   const result_history = useRef(null);
+  const result_history_failed = useRef(null);
+  const result_history_original = useRef(null);
   const time = useRef(null);
+  function renderResult(rawResult) {
+    let dom1 = [];
+    let dom2 = [];
+    const pattern_success = /TASK \[(.+?)\].*?\n(.+?): /gi;
+    const matches = Array.from(rawResult.matchAll(pattern_success));
+    const pattern_failure =
+      /TASK \[(.+?)\].*?\nfatal: .*?FAILED! => {"msg": "(.+?)"}/gi;
+    const matches_failed = Array.from(rawResult.matchAll(pattern_failure));
+    for (const match of matches_failed) {
+      dom2.push(
+        // <Card className="content-card-noneCheckBox" key={match[1]}>
+        //   <CardBody>
+        //     <p className="SubText">
+        //       {match[1]} <CancelIcon sx={{ color: "red" }} />
+        //     </p>
+        //   </CardBody>
+        // </Card>
+        <Accordion
+          variant="splitted"
+          style={{ padding: "0px" }}
+          classNames={{ title: "py-3" }}
+        >
+          <AccordionItem
+            classNames={{ title: "text-[#E8E8FC] text-[16px] bg-[#2E2E48]" }}
+            style={{
+              backgroundColor: "#2E2E48",
+              marginBottom: "10px",
+              padding: "0px 27px",
+            }}
+            id={match[1]}
+            title={
+              <div className="flex items-center gap-5">
+                <p>{match[1]}</p>
+                <CancelIcon sx={{ color: "red" }} />
+              </div>
+            }
+          >
+            <p className="content-detail whitespace-pre-wrap">
+              <span className="font-bold">Detail:</span> {""}
+              {match[2]}
+            </p>
+          </AccordionItem>
+        </Accordion>
+      );
+    }
+
+    for (const match of matches) {
+      if (match[2] != "skipping" && match[2] != "fatal") {
+        // console.log(`${match[1]}: ${match[2]}`);
+        dom1.push(
+          <Card className="content-card-noneCheckBox" key={match[1]}>
+            <CardBody>
+              <p className="SubText">
+                {match[1]} <CheckCircleIcon color="success" />
+              </p>
+            </CardBody>
+          </Card>
+        );
+      }
+    }
+    result_history.current = dom1;
+    result_history_failed.current = dom2;
+  }
   const renderCell = React.useCallback((item, columnKey) => {
     const cellValue = item[columnKey];
     // console.log(`${columnKey}: ${cellValue}`);
@@ -50,7 +119,8 @@ export default function HistoryContent() {
               className="text-bold text-sm select-none text-black underline cursor-pointer w-fit"
               onClick={() => {
                 onOpen();
-                result_history.current = item["history"];
+                renderResult(item["history"]);
+                result_history_original.current = item["history"];
               }}
             >
               <StorageIcon />
@@ -175,10 +245,17 @@ export default function HistoryContent() {
               <ModalHeader className="flex flex-col gap-1">
                 Result of server
               </ModalHeader>
-              <ModalBody>
-                <p className="whitespace-pre-wrap text-left text-black">
+              <ModalBody className="px-[8rem] bg-[#27273D]">
+                <div className="whitespace-pre-wrap text-left text-white">
+                  <p className="font-bold">Success:</p>
                   {result_history.current}
-                </p>
+                  {result_history_failed.current.length > 0 && (
+                    <>
+                      <p className="font-bold">Failed:</p>
+                      {result_history_failed.current}
+                    </>
+                  )}
+                </div>
               </ModalBody>
               <ModalFooter>
                 <Button

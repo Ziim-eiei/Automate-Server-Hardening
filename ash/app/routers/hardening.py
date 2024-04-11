@@ -82,15 +82,6 @@ async def run_proc(cmd, id):
     save_history(result_output, id)
 
 
-@router.post("/run")
-async def run_command(cmd: Command):
-    if not ObjectId.is_valid(cmd.id):
-        raise HTTPException(status_code=400, detail="invalid object id")
-    else:
-        cmd_received = jsonable_encoder(cmd)
-        asyncio.create_task(run_proc(cmd_received["cmd"], cmd_received["id"]))
-
-
 def run_job_auto(job: Job):
     monogo_client = MongoClient(config["MONGODB_URI"])[config["DB_NAME"]][
         "hardening_job"
@@ -149,7 +140,6 @@ async def run_job(job: Job):
     cmd = f"ansible-playbook -i {server['path']+'/hosts'} {server['path']+'/hardening/tasks/main.yml'}"
     # cmd += "| sed -nr '/^TASK/{h;n;/^skipping:/{n;b};H;x};p'"
     # print(cmd)
-    # asyncio.create_task(run_proc("ls -la && cat main.py", job["job_id"]))
     asyncio.create_task(run_proc(cmd, job["job_id"]))
     return {"msg": "running"}
 
