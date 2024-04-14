@@ -25,7 +25,7 @@ function SideBar({ serverId }) {
               className={
                 val.link === path.current
                   ? "row SubText cursor-pointer bg-gradient-to-r from-[#7E73FF] to-slate-80 rounded-md"
-                  : "row SubText cursor-pointer hover:bg-[#0E1625] rounded-md"
+                  : "row SubText cursor-pointer rounded-md "
               }
               onClick={() => {
                 if (val.link == "/hardening" && serverId != null) {

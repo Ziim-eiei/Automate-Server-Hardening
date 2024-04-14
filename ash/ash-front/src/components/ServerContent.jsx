@@ -88,13 +88,12 @@ export default function ServerContent() {
         return (
           <div className="flex flex-col">
             <p
-              className="text-bold text-sm select-none text-black underline cursor-pointer w-fit"
+              className="text-bold text-sm select-none text-black cursor-pointer w-fit flex items-center"
               onClick={() => {
                 navigate(`/hardening/${item._id}`);
               }}
             >
-              <StorageIcon />
-              {cellValue}
+              <StorageIcon /> &nbsp; {cellValue}
             </p>
           </div>
         );
@@ -169,22 +168,10 @@ export default function ServerContent() {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalTwoVisible, setModalTwoVisible] = useState(false);
   return (
-    <div className="p-5">
-      <p>Project Description: {data?.project_description}</p>
-      <br />
-      {data?.server?.length ? (
-        <div>
-          <MyButton
-            onClick={() => {
-              navigate(`/create/server/${projectId}`);
-            }}
-          >
-            Create server
-          </MyButton>
-          <br />
-          <br />
-        </div>
-      ) : null}
+    <div style={{ margin: "0px 50px" }}>
+      <div className="absolute" style={{top: 115}}>
+        <p>Project Description: {data?.project_description}</p>
+      </div>
 
       <Table
         aria-label="Example table with custom cells"
@@ -197,6 +184,7 @@ export default function ServerContent() {
               key={column.uid}
               align={column.uid === "actions" ? "center" : "start"}
               className="select-none"
+              style={{ backgroundColor: "#e9e9e9" }}
             >
               {column.name}
             </TableColumn>
@@ -206,8 +194,8 @@ export default function ServerContent() {
           items={data?.server ? data.server : []}
           emptyContent={
             <div>
-              <p>Don't have data</p>
-              <MyButton
+              <p>Don't have a server.</p>
+              <MyButton className=" bg-[#4A3AFF] text-[#FFFFFF] p-4 mt-2 shadow-xl "
                 onClick={() => {
                   navigate(`/create/server/${projectId}`);
                 }}
@@ -226,6 +214,23 @@ export default function ServerContent() {
           )}
         </TableBody>
       </Table>
+
+      <br />
+
+      {data?.server?.length ? (
+        <div className="flex justify-center">
+          <MyButton
+            className=" bg-[#4A3AFF] text-[#FFFFFF] shadow-xl py-5 px-10 rounded-xl "
+            onClick={() => {
+              navigate(`/create/server/${projectId}`);
+            }}
+          >
+            Create server
+          </MyButton>
+
+        </div>
+      ) : null}
+
       <Modal
         isOpen={modalVisible}
         onClose={() => {
@@ -236,13 +241,21 @@ export default function ServerContent() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <ModalHeader className="flex flex-col gap-1 border-b-2 mx-8">
                 Delete Server
               </ModalHeader>
               <ModalBody>
                 <p>Are you sure to delete this server?</p>
               </ModalBody>
               <ModalFooter>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    onClose();
+                  }}
+                >
+                  No
+                </Button>
                 <Button
                   color="danger"
                   onPress={() => {
@@ -264,14 +277,7 @@ export default function ServerContent() {
                 >
                   Yes
                 </Button>
-                <Button
-                  color="primary"
-                  onPress={() => {
-                    onClose();
-                  }}
-                >
-                  No
-                </Button>
+
               </ModalFooter>
             </>
           )}

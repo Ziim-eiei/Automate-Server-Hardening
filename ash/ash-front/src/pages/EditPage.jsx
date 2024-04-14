@@ -4,6 +4,7 @@ import { MyButton } from "../components/Button";
 import Project from "../components/Project";
 import Server from "../components/Server";
 import { useNavigate, useParams } from "react-router-dom";
+import "../css/Edit.css";
 
 export default function EditPage() {
   let { state, id } = useParams();
@@ -124,12 +125,13 @@ export default function EditPage() {
   }
   return (
     <>
-      <div className="text-black flex justify-center items-center p-10">
-        <Card className="w-fit h-1/2 px-8 bg-gradient-to-tr from-blue-500 to-yellow-500 text-black">
+      <div className="container flex justify-center items-center editBg ">
+        <Card className="vertical-center rounded-3xl">
           <CardBody>
             <div>{render()}</div>
             <div className="text-right">
               <MyButton
+                className=" bg-[#4A3AFF] text-[#FFFFFF] shadow-xl py-4 px-8 rounded-xl "
                 onClick={() => {
                   switch (state) {
                     case "project":
@@ -149,6 +151,7 @@ export default function EditPage() {
             </div>
           </CardBody>
         </Card>
+        <div class="dotEdit"></div>
       </div>
     </>
   );

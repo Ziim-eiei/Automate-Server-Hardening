@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { MyInput } from "./Input";
+import "../css/Create.css";
 
 export default function Server({ server, setServer, invalidIP, edit }) {
   function checkIPFormat(ip) {
@@ -32,45 +33,50 @@ export default function Server({ server, setServer, invalidIP, edit }) {
       ) : (
         <p className="font-bold text-center text-xl">Create server</p>
       )}
+      <p className="lineBar"></p>
       <MyInput
-        radius="full"
-        className="w-[20rem] p-2"
+        className="createServer drop-shadow-sm rounded-2xl"
         classNames={{
           inputWrapper: "h-unit-10",
         }}
+        radius="md"
         label="Server IP :"
         labelPlacement="outside"
         placeholder="Example: 192.168.x.x"
+        variant="bordered"
         value={server.ip}
         onChange={handleIpChange}
         errorMessage={message.current}
         isInvalid={message.current !== ""}
       />
       <MyInput
-        radius="full"
-        className="w-[20rem] p-2"
+        className="createServer drop-shadow-sm rounded-2xl"
         classNames={{
           inputWrapper: "h-unit-10",
         }}
         label="Username :"
+        radius="md"
         placeholder="username"
         labelPlacement="outside"
+        variant="bordered"
         value={server.username}
         onChange={handleUsernameChange}
       />
       <MyInput
-        radius="full"
-        className="w-[20rem] p-2"
+        className="createServer drop-shadow-sm rounded-2xl"
         classNames={{
           inputWrapper: "h-unit-10",
         }}
         label="Password :"
+        radius="md"
         placeholder="passsword"
         labelPlacement="outside"
+        variant="bordered"
         value={server.password}
         onChange={handlePasswordChange}
         type="password"
       />
+      
     </div>
   );
 }
