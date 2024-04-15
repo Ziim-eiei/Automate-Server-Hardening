@@ -11,6 +11,7 @@ function HardenTopper({
   serverId,
   checkData,
   onOpen,
+  setIsPressSuggestion,
 }) {
   // let { serverId } = useParams();
   const [data, setData] = useState("");
@@ -97,19 +98,25 @@ function HardenTopper({
         <p className="topper-name SubText">Name</p>
         <div>
           {/* <input className="topper-search" placeholder="Type to search..." /> */}
-
+          <MyButton
+            className="topper-btn"
+            isDisabled={serverId != null ? false : true}
+            onClick={() => {
+              setIsPressSuggestion(true);
+            }}
+          >
+            Auto Suggestion
+          </MyButton>{" "}
           <MyButton
             className="topper-btn"
             onClick={() => {
               setIsPressHarden(true);
-              onOpen();
               // console.log("Hardening");
             }}
             isDisabled={Object.keys(checkData).length != 0 ? false : true}
           >
             Start
           </MyButton>
-          <MyButton className="topper-btn">Auto Suggestion</MyButton>
         </div>
       </div>
     </div>

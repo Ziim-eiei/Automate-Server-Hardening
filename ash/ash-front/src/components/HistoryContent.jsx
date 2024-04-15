@@ -51,17 +51,11 @@ export default function HistoryContent() {
     const pattern_success = /TASK \[(.+?)\].*?\n(.+?): /gi;
     const matches = Array.from(rawResult.matchAll(pattern_success));
     const pattern_failure =
-      /TASK \[(.+?)\].*?\nfatal: .*?FAILED! => {"msg": "(.+?)"}/gi;
+      /TASK \[(.+?)\].*?\nfatal: .*?(UNREACHABLE|FAILED)! => ({\"changed\": .*?, \"msg\": \"(.+?)\", .*?}|{\"msg\": \"(.+?)\"})/gi;
     const matches_failed = Array.from(rawResult.matchAll(pattern_failure));
+    // console.log(matches_failed);
     for (const match of matches_failed) {
       dom2.push(
-        // <Card className="content-card-noneCheckBox" key={match[1]}>
-        //   <CardBody>
-        //     <p className="SubText">
-        //       {match[1]} <CancelIcon sx={{ color: "red" }} />
-        //     </p>
-        //   </CardBody>
-        // </Card>
         <Accordion
           variant="splitted"
           style={{ padding: "0px" }}
@@ -77,14 +71,15 @@ export default function HistoryContent() {
             id={match[1]}
             title={
               <div className="flex items-center gap-5">
-                <p>{match[1]}</p>
-                <CancelIcon sx={{ color: "red" }} />
+                <p>
+                  {match[1]} {""}
+                  <CancelIcon sx={{ color: "red" }} />
+                </p>
               </div>
             }
           >
             <p className="content-detail whitespace-pre-wrap">
-              <span className="font-bold">Detail:</span> {""}
-              {match[2]}
+              <span className="font-bold">Detail:</span> {match[3]}
             </p>
           </AccordionItem>
         </Accordion>
@@ -247,8 +242,12 @@ export default function HistoryContent() {
               </ModalHeader>
               <ModalBody className="px-[8rem] bg-[#27273D]">
                 <div className="whitespace-pre-wrap text-left text-white">
-                  <p className="font-bold">Success:</p>
-                  {result_history.current}
+                  {result_history.current.length > 0 && (
+                    <>
+                      <p className="font-bold">Success:</p>
+                      {result_history.current}
+                    </>
+                  )}
                   {result_history_failed.current.length > 0 && (
                     <>
                       <p className="font-bold">Failed:</p>

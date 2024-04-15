@@ -15,10 +15,10 @@ function HardenContent({
   serverId,
   run,
   setRun,
+  history,
+  setHistory,
 }) {
   const [name, setName] = useState("");
-  const [history, setHistory] = useState({});
-  // const selectData = useRef({});
   useEffect(() => {
     if (run) {
       localStorage.removeItem(name);

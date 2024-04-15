@@ -49,6 +49,7 @@ def save_history(output, id):
     if "failed=1" in check_output or "unreachable=1" in check_output:
         newvalues = {"$set": {"history": output, "status": "failed"}}
         result = monogo_client.update_one(myquery, newvalues)
+        raise HTTPException(status_code=400, detail="failed to hardening")
     else:
         newvalues = {"$set": {"history": output, "status": "success"}}
         result = monogo_client.update_one(myquery, newvalues)
@@ -140,7 +141,7 @@ async def run_job(job: Job):
     cmd = f"ansible-playbook -i {server['path']+'/hosts'} {server['path']+'/hardening/tasks/main.yml'}"
     # cmd += "| sed -nr '/^TASK/{h;n;/^skipping:/{n;b};H;x};p'"
     # print(cmd)
-    asyncio.create_task(run_proc(cmd, job["job_id"]))
+    await asyncio.create_task(run_proc(cmd, job["job_id"]))
     return {"msg": "running"}
 
 

@@ -46,8 +46,8 @@ async def run_job(job: Job):
         raise HTTPException(status_code=404, detail="server not found")
     cmd = f"ansible-playbook -i {server['path']+'/hosts'} {server['path']+'/audit/tasks/main.yml'}"
     # print(cmd)
-    asyncio.create_task(run_proc(cmd, job["server_id"]))
-    return {"msg": "running"}
+    await asyncio.create_task(run_proc(cmd, job["server_id"]))
+    return {"msg": "success"}
 
 
 def audit_cis(path):
