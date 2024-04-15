@@ -111,15 +111,14 @@ export default function HistoryContent() {
         return (
           <div className="flex flex-col">
             <p
-              className="text-bold text-sm select-none text-black underline cursor-pointer w-fit"
+              className="text-bold text-sm select-none text-black cursor-pointer w-fit  flex items-center"
               onClick={() => {
                 onOpen();
                 renderResult(item["history"]);
                 result_history_original.current = item["history"];
               }}
             >
-              <StorageIcon />
-              {cellValue}
+              <StorageIcon />  &nbsp;  {cellValue}
             </p>
           </div>
         );
@@ -190,11 +189,10 @@ export default function HistoryContent() {
   }, []);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
-    <div className="p-5">
+    <div style={{ margin: "0px 50px" }}>
       <Table
         aria-label="Example table with custom cells"
         selectionMode="single"
-        color={"primary"}
         classNames={{
           base: "max-h-[520px] scroll",
         }}
@@ -206,6 +204,7 @@ export default function HistoryContent() {
               key={column.uid}
               align={column.uid === "actions" ? "center" : "start"}
               className="select-none"
+              style={{ backgroundColor: "#e9e9e9" }}
             >
               {column.name}
             </TableColumn>
@@ -215,7 +214,8 @@ export default function HistoryContent() {
           items={data ? data : []}
           emptyContent={
             <div>
-              <p>Don't have data</p>
+              {/* <p>Don't have data</p> */}
+              <p>Don't have a history.</p>
             </div>
           }
         >

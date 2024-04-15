@@ -1,0 +1,71 @@
+.editBg {
+    border: #45EDF2 solid 1px;
+    border-radius: 3vh;
+    padding: 30px 30px 30px 30px;
+    margin: 4vh;
+    height: 92vh;
+    text-align: center;
+    z-index: 10;
+}
+
+.container {
+    height: 92vh;
+    min-width: 96.3vw;
+    position: relative;
+    z-index: 10;
+}
+
+.vertical-center {
+    margin: 0px;
+    padding: 10px 30px;
+    padding-bottom: 5px;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 500px;
+    z-index: 10;
+}
+
+.dotEdit {
+    height: 500px;
+    width: 500px;
+    top: 15% !important;
+    left: 50% !important;
+    position: absolute;
+    transform: translateY(-50%);
+    transform: translateX(-50%);
+    background-color: #593CA3;
+    border-radius: 50%;
+    display: inline-block;
+    filter: blur(10rem);
+    z-index: -10 !important;
+}
+
+/* ------------------------------------------------------------ */
+
+.createName {
+    /* background-color: #ffffff; */
+    margin-bottom: 10px;
+}
+
+.createDesc {
+    /* background-color: #ffffff; */
+}
+
+.lineBar {
+    display: flex;
+    flex-direction: column;
+    border-top: solid #D9DBE9 2px;
+    margin: 20px 0px 0px 0px;
+    padding-bottom: 20px;
+}
+
+/* ------------------------------------------------------------ */
+.createServer {
+    /* background-color: #ffffff; */
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    padding-top: 0px;
+}
+

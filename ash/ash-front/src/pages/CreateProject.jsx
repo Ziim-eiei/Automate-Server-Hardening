@@ -4,6 +4,7 @@ import { MyButton } from "../components/Button";
 import Project from "../components/Project";
 import Server from "../components/Server";
 import { useNavigate, useParams } from "react-router-dom";
+import "../css/Create.css";
 
 export default function CreateProject() {
   let { state, project_id } = useParams();
@@ -74,12 +75,18 @@ export default function CreateProject() {
   }
   return (
     <>
-      <div className="text-white flex justify-center items-center p-10">
-        <Card className="w-fit h-1/2 px-8 bg-gradient-to-tr from-blue-500 to-yellow-500">
+      <div className="container flex justify-center items-center createBg ">
+        <Card className="vertical-center rounded-3xl">
           <CardBody>
             <div>{render()}</div>
             <div className="text-right">
               <MyButton
+                className=" bg-[#b6b6b9] text-[#000000] shadow-xl py-4 px-8 rounded-xl mr-2 "
+                onClick={() => { navigate("/project");}}>
+                Back
+              </MyButton>
+              <MyButton
+                className=" bg-[#4A3AFF] text-[#FFFFFF] shadow-xl py-4 px-8 rounded-xl "
                 onClick={() => {
                   switch (state) {
                     case "project":
@@ -94,16 +101,15 @@ export default function CreateProject() {
                       break;
                   }
                 }}
-                isDisabled={
-                  (checkProject() && checkServer()) || invalidIP.current
-                }
-              >
+                isDisabled={(checkProject() && checkServer()) || invalidIP.current} >
                 Create
               </MyButton>
             </div>
           </CardBody>
         </Card>
+        <div class="dotCreate"></div>
       </div>
+
     </>
   );
 }

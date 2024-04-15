@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ProjectTopper() {
   return (
-    <span className="topper">
+    <span className="topper" >
       <h1 className="heading text-xl">Project Management</h1>
       {/* <p className="projName">Project name</p> */}
       {/* <div className="row">

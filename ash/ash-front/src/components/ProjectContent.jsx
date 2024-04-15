@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { Card, CardBody, autocomplete } from "@nextui-org/react";
 import useSWR, { mutate } from "swr";
 import { useNavigate } from "react-router-dom";
 import { MyButton } from "../components/Button";
@@ -25,6 +26,7 @@ import { EditIcon } from "../components/icons/EditIcon.jsx";
 import { DeleteIcon } from "../components/icons/DeleteIcon";
 import { EyeIcon } from "../components/icons/EyeIcon";
 import FolderIcon from "@mui/icons-material/Folder";
+import { Maximize } from "@mui/icons-material";
 
 const columns = [
   { name: "PROJECT NAME", uid: "project_name" },
@@ -51,13 +53,13 @@ export default function ProjectContent() {
         return (
           <div className="">
             <p
-              className="text-bold text-sm select-none text-black underline cursor-pointer w-fit"
+              className="text-bold text-sm select-none text-black cursor-pointer w-fit flex items-center"
               onClick={() => {
                 navigate(`/server/${item._id}`);
               }}
             >
-              <FolderIcon />
-              {cellValue}
+              <FolderIcon /> &nbsp; {cellValue}
+
             </p>
           </div>
         );
@@ -142,25 +144,10 @@ export default function ProjectContent() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <div className="p-5">
-      {data?.length ? (
-        <div>
-          <MyButton
-            onClick={() => {
-              navigate("/create/project");
-            }}
-          >
-            Create project
-          </MyButton>
-          <br />
-          <br />
-        </div>
-      ) : null}
-
+    <div style={{ margin: "0px 50px" }} >
       <Table
         aria-label="Example table with custom cells"
         selectionMode="single"
-        color={"primary"}
       >
         <TableHeader columns={columns}>
           {(column) => (
@@ -168,6 +155,7 @@ export default function ProjectContent() {
               key={column.uid}
               align={column.uid === "actions" ? "center" : "start"}
               className="select-none"
+              style={{ backgroundColor: "#e9e9e9" }}
             >
               {column.name}
             </TableColumn>
@@ -177,8 +165,9 @@ export default function ProjectContent() {
           items={data ? data : []}
           emptyContent={
             <div>
-              <p>Don't have data</p>
-              <MyButton
+              {/* <p>Don't have data</p> */}
+              <p>Don't have a project.</p>
+              <MyButton className=" bg-[#4A3AFF] text-[#FFFFFF] p-4 mt-2 shadow-xl "
                 onClick={() => {
                   navigate("/create/project");
                 }}
@@ -189,7 +178,9 @@ export default function ProjectContent() {
           }
         >
           {(item) => (
-            <TableRow key={item._id}>
+            <TableRow
+              className=""
+              key={item._id}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
@@ -197,18 +188,46 @@ export default function ProjectContent() {
           )}
         </TableBody>
       </Table>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
+
+      <br />
+
+      {data?.length ? (
+        <div className="flex justify-center">
+          <MyButton
+            className=" bg-[#4A3AFF] text-[#FFFFFF] shadow-xl py-5 px-10 rounded-xl "
+            onClick={() => {
+              navigate("/create/project");
+            }}
+          >
+            Create project
+          </MyButton>
+
+        </div>
+      ) : null}
+
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}
+        className=" bg-[#FFFFFF]"
+      >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <ModalHeader className="flex flex-col gap-1 border-b-2 mx-8">
                 Delete Project
               </ModalHeader>
-              <ModalBody>
+              <ModalBody >
                 <p>Are you sure to delete this project?</p>
               </ModalBody>
               <ModalFooter>
+
                 <Button
+                  className="text-[#FFFFFF] shadow-xl py-2 px-5 rounded-xl "
+                  color="primary"
+                  onPress={() => { onClose(); }}>
+                  No
+                </Button>
+
+                <Button
+                  className="text-[#FFFFFF] shadow-xl py-2 px-5 rounded-xl "
                   color="danger"
                   onPress={() => {
                     deleteProject(project_id.current);
@@ -216,29 +235,17 @@ export default function ProjectContent() {
                       "http://localhost:8000/api/projects",
                       async (data) => {
                         return data.filter(
-                          (project) => project._id !== project_id.current
-                        );
-                      },
-                      { revalidate: true }
-                    );
+                          (project) => project._id !== project_id.current);
+                      }, { revalidate: true });
                     onClose();
-                  }}
-                >
+                  }}>
                   Yes
-                </Button>
-                <Button
-                  color="primary"
-                  onPress={() => {
-                    onClose();
-                  }}
-                >
-                  No
                 </Button>
               </ModalFooter>
             </>
           )}
         </ModalContent>
       </Modal>
-    </div>
+    </div >
   );
 }
