@@ -31,6 +31,7 @@ export default function CreateProject({ setProject, project, edit }) {
         variant="bordered"
         value={project.name}
         onChange={handleNameChange}
+        maxLength={30}
       />
       <Textarea
         className="createDesc drop-shadow-md rounded-2xl"
@@ -42,6 +43,7 @@ export default function CreateProject({ setProject, project, edit }) {
           handleDescChange(e);
         }}
         value={project.description}
+        maxLength={150}
       />
       <br />
     </div>

@@ -88,6 +88,10 @@ function AuditCard() {
       // console.log(run);
     }
     if (isPressHarden) {
+      run_hardening_success.current = false;
+      result_hardening.current = "";
+      result_hardening_history.current = [];
+      result_hardening_history_failed.current = [];
       // console.log(checkData);
       if (Object.keys(checkData).length != 0) {
         runHarden();
@@ -95,7 +99,6 @@ function AuditCard() {
       }
       setIsPressHarden(false);
       setMessage([]);
-      // run_hardening_success.current = false;
     }
   }, [isPressHarden]);
   const { serverId } = useParams();
@@ -145,6 +148,7 @@ function AuditCard() {
         ).then((res) => {
           return res.json();
         });
+        autoSuggestionData.current = auditData;
         renderAutoSuggestion(auditData);
       }
     });
@@ -155,7 +159,6 @@ function AuditCard() {
     // });
     // renderAutoSuggestion(auditData);
     setIsPressSuggestion(false);
-    autoSuggestionData.current = auditData;
     for (const d in autoSuggestionData.current) {
       if (autoSuggestionData.current[d]["status"] === true) {
         delete autoSuggestionData.current[d];
@@ -274,20 +277,22 @@ function AuditCard() {
               }}
               id={d}
               title={
-                <div className="flex items-center gap-5">
-                  <p>
-                    <DeleteIcon
-                      sx={{ color: "red" }}
-                      className="cursor-pointer"
-                      onClick={() => {
-                        delete data[d];
-                        autoSuggestionData.current = data;
-                        renderAutoSuggestion(data);
-                      }}
-                    />{" "}
-                    {d.replace("rule_", "").replace(/_/g, ".")}
-                  </p>
+                <div className="flex items-center">
+                  {d.replace("rule_", "").replace(/_/g, ".")} {data[d]["name"]}
                 </div>
+              }
+              startContent={
+                <Button className="bg-[#2E2E48 w-fit">
+                  <DeleteIcon
+                    sx={{ color: "red" }}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      delete data[d];
+                      autoSuggestionData.current = data;
+                      renderAutoSuggestion(data);
+                    }}
+                  />
+                </Button>
               }
             >
               <p className="content-detail whitespace-pre-wrap">
@@ -417,6 +422,7 @@ function AuditCard() {
                       color="primary"
                       onPress={() => {
                         handleSuggestion(autoSuggestionData.current);
+                        setModalTwoVisible(false);
                       }}
                     >
                       Confirm

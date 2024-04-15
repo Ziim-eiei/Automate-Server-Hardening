@@ -147,7 +147,7 @@
   tags:
     - rule_2.2.16
 
-- name: "2.2.18 Ensure Create symbolic links is set to Administrators NT VIRTUAL MACHINEVirtual Machines MS only"
+- name: "2.2.18 Ensure Create symbolic links is set to Administrators NT VIRTUAL MACHINE Virtual Machines MS only"
   ansible.windows.win_user_right:
     name: SeCreateSymbolicLinkPrivilege
     users:
@@ -260,7 +260,7 @@
   tags:
     - rule_2.2.30
 
-- name: "2.2.32 | PATCH | Ensure Impersonate a client after authentication is set to Administrators LOCAL SERVICE NETWORK SERVICE SERVICE and when the Web Server IIS Role with Web Services Role Service is installed IIS IUSRS MS only"
+- name: "2.2.32 Ensure Impersonate a client after authentication is set to Administrators LOCAL SERVICE NETWORK SERVICE SERVICE and when the Web Server IIS Role with Web Services Role Service is installed IIS IUSRS MS only"
   ansible.windows.win_user_right:
     name: SeImpersonatePrivilege
     users:
@@ -312,7 +312,7 @@
   tags:
     - rule_2.2.35
 
-- name: "2.2.38 Ensure Manage auditing and security log is set to Administrators and when Exchange is running in the environment Exchange Servers DC only"
+- name: "2.2.38 Ensure Manage auditing and security log is set to Administrators and when Exchange is running in the environment Exchange Servers MS only"
   ansible.windows.win_user_right:
     name: SeSecurityPrivilege
     users:
@@ -366,7 +366,7 @@
   tags:
     - rule_2.2.42
 
-- name: "2.2.43 Ensure Profile system performance is set to Administrators NT SERVICEWdiServiceHost"
+- name: "2.2.43 Ensure Profile system performance is set to Administrators NT SERVICE WdiServiceHost"
   ansible.windows.win_user_right:
     name: SeSystemProfilePrivilege
     users:
@@ -412,7 +412,7 @@
   tags:
     - rule_2.2.48
 
-- name: "2.3.1.1 | PATCH | Ensure Accounts Administrator account status is set to Disabled MS only"
+- name: "2.3.1.1 Ensure Accounts Administrator account status is set to Disabled MS only"
   community.windows.win_security_policy:
     section: System Access
     key: EnableAdminAccount
@@ -454,7 +454,7 @@
   tags:
     - rule_2.3.1.4
 
-- name: "2.3.1.5 | PATCH | Configure Accounts Rename administrator account"
+- name: "2.3.1.5 Configure Accounts Rename administrator account"
   community.windows.win_security_policy:
     section: System Access
     key: newadministratorname
@@ -464,7 +464,7 @@
   tags:
     - rule_2.3.1.5
 
-- name: "2.3.1.6 | PATCH | Configure Accounts Rename guest account"
+- name: "2.3.1.6 Configure Accounts Rename guest account"
   community.windows.win_security_policy:
     section: System Access
     key: NewGuestName

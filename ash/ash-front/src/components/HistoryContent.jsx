@@ -118,7 +118,7 @@ export default function HistoryContent() {
                 result_history_original.current = item["history"];
               }}
             >
-              <StorageIcon />  &nbsp;  {cellValue}
+              <StorageIcon /> &nbsp; {cellValue}
             </p>
           </div>
         );
@@ -238,7 +238,7 @@ export default function HistoryContent() {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Result of server
+                Result of Hardening
               </ModalHeader>
               <ModalBody className="px-[8rem] bg-[#27273D]">
                 <div className="whitespace-pre-wrap text-left text-white">

@@ -76,7 +76,6 @@ export default function Server({ server, setServer, invalidIP, edit }) {
         onChange={handlePasswordChange}
         type="password"
       />
-      
     </div>
   );
 }

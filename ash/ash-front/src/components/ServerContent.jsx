@@ -25,6 +25,7 @@ import {
 import StorageIcon from "@mui/icons-material/Storage";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Spinner } from "@nextui-org/react";
+import WarningIcon from "@mui/icons-material/Warning";
 
 export default function ServerContent() {
   let { projectId } = useParams();
@@ -123,8 +124,9 @@ export default function ServerContent() {
               <span className="text-lg text-success-400 cursor-pointer active:opacity-50">
                 <div
                   onClick={() => {
-                    setModalTwoVisible(true);
-                    runHarden(item._id);
+                    // setModalTwoVisible(true);
+                    // runHarden(item._id);
+                    setModalConfirmVisible(true);
                   }}
                 >
                   <PlayArrowIcon color="success" />
@@ -167,9 +169,10 @@ export default function ServerContent() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalTwoVisible, setModalTwoVisible] = useState(false);
+  const [modalConfirmVisible, setModalConfirmVisible] = useState(false);
   return (
     <div style={{ margin: "0px 50px" }}>
-      <div className="absolute" style={{top: 115}}>
+      <div className="absolute" style={{ top: 115 }}>
         <p>Project Description: {data?.project_description}</p>
       </div>
 
@@ -177,6 +180,10 @@ export default function ServerContent() {
         aria-label="Example table with custom cells"
         selectionMode="single"
         color={"primary"}
+        classNames={{
+          base: "max-h-[520px] scroll",
+        }}
+        isHeaderSticky
       >
         <TableHeader columns={columns}>
           {(column) => (
@@ -195,7 +202,8 @@ export default function ServerContent() {
           emptyContent={
             <div>
               <p>Don't have a server.</p>
-              <MyButton className=" bg-[#4A3AFF] text-[#FFFFFF] p-4 mt-2 shadow-xl "
+              <MyButton
+                className=" bg-[#4A3AFF] text-[#FFFFFF] p-4 mt-2 shadow-xl "
                 onClick={() => {
                   navigate(`/create/server/${projectId}`);
                 }}
@@ -227,7 +235,6 @@ export default function ServerContent() {
           >
             Create server
           </MyButton>
-
         </div>
       ) : null}
 
@@ -277,7 +284,6 @@ export default function ServerContent() {
                 >
                   Yes
                 </Button>
-
               </ModalFooter>
             </>
           )}
@@ -289,6 +295,9 @@ export default function ServerContent() {
         isDismissable={false}
         scrollBehavior="inside"
         size="5xl"
+        onClose={() => {
+          setModalTwoVisible(false);
+        }}
       >
         <ModalContent>
           {(onClose) => (
@@ -307,11 +316,56 @@ export default function ServerContent() {
                 <Button
                   color="danger"
                   onPress={() => {
-                    onClose();
-                    history.go(0);
+                    setModalTwoVisible(false);
                   }}
                 >
                   Close
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={modalConfirmVisible}
+        isDismissable={false}
+        size="2xl"
+        onClose={() => {
+          setModalConfirmVisible(false);
+        }}
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-3">
+                <span>
+                  <WarningIcon sx={{ color: "orange" }} /> Warning
+                </span>
+              </ModalHeader>
+              <ModalBody className="px-[2rem]">
+                <p>
+                  This action will run the automate hardening process on the
+                  server. <p className="font-bold">Are you sure to continue?</p>
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  color="danger"
+                  onPress={() => {
+                    setModalConfirmVisible(false);
+                  }}
+                >
+                  No
+                </Button>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    setModalConfirmVisible(false);
+                    setModalTwoVisible(true);
+                  }}
+                >
+                  Yes
                 </Button>
               </ModalFooter>
             </>

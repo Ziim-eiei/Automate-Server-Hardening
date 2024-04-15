@@ -59,7 +59,6 @@ export default function ProjectContent() {
               }}
             >
               <FolderIcon /> &nbsp; {cellValue}
-
             </p>
           </div>
         );
@@ -144,10 +143,14 @@ export default function ProjectContent() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <div style={{ margin: "0px 50px" }} >
+    <div style={{ margin: "0px 50px" }}>
       <Table
         aria-label="Example table with custom cells"
         selectionMode="single"
+        classNames={{
+          base: "max-h-[520px] scroll",
+        }}
+        isHeaderSticky
       >
         <TableHeader columns={columns}>
           {(column) => (
@@ -167,7 +170,8 @@ export default function ProjectContent() {
             <div>
               {/* <p>Don't have data</p> */}
               <p>Don't have a project.</p>
-              <MyButton className=" bg-[#4A3AFF] text-[#FFFFFF] p-4 mt-2 shadow-xl "
+              <MyButton
+                className=" bg-[#4A3AFF] text-[#FFFFFF] p-4 mt-2 shadow-xl "
                 onClick={() => {
                   navigate("/create/project");
                 }}
@@ -178,9 +182,7 @@ export default function ProjectContent() {
           }
         >
           {(item) => (
-            <TableRow
-              className=""
-              key={item._id}>
+            <TableRow className="" key={item._id}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
@@ -201,11 +203,13 @@ export default function ProjectContent() {
           >
             Create project
           </MyButton>
-
         </div>
       ) : null}
 
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        isDismissable={false}
         className=" bg-[#FFFFFF]"
       >
         <ModalContent>
@@ -214,15 +218,17 @@ export default function ProjectContent() {
               <ModalHeader className="flex flex-col gap-1 border-b-2 mx-8">
                 Delete Project
               </ModalHeader>
-              <ModalBody >
+              <ModalBody>
                 <p>Are you sure to delete this project?</p>
               </ModalBody>
               <ModalFooter>
-
                 <Button
                   className="text-[#FFFFFF] shadow-xl py-2 px-5 rounded-xl "
                   color="primary"
-                  onPress={() => { onClose(); }}>
+                  onPress={() => {
+                    onClose();
+                  }}
+                >
                   No
                 </Button>
 
@@ -235,10 +241,14 @@ export default function ProjectContent() {
                       "http://localhost:8000/api/projects",
                       async (data) => {
                         return data.filter(
-                          (project) => project._id !== project_id.current);
-                      }, { revalidate: true });
+                          (project) => project._id !== project_id.current
+                        );
+                      },
+                      { revalidate: true }
+                    );
                     onClose();
-                  }}>
+                  }}
+                >
                   Yes
                 </Button>
               </ModalFooter>
@@ -246,6 +256,6 @@ export default function ProjectContent() {
           )}
         </ModalContent>
       </Modal>
-    </div >
+    </div>
   );
 }
