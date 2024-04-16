@@ -102,6 +102,13 @@ export default function HistoryContent() {
     }
     result_history.current = dom1;
     result_history_failed.current = dom2;
+    if (dom1.length === 0 && dom2.length === 0) {
+      dom1.push(
+        <div className="text-white">
+          <CheckCircleIcon color="success" /> All topic are passed
+        </div>
+      );
+    }
   }
   const renderCell = React.useCallback((item, columnKey) => {
     const cellValue = item[columnKey];

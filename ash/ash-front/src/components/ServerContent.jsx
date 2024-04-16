@@ -12,6 +12,7 @@ import {
   TableRow,
   TableCell,
   Tooltip,
+  dataFocusVisibleClasses,
 } from "@nextui-org/react";
 import {
   Modal,
@@ -26,8 +27,15 @@ import StorageIcon from "@mui/icons-material/Storage";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Spinner } from "@nextui-org/react";
 import WarningIcon from "@mui/icons-material/Warning";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import { Card, CardBody } from "@nextui-org/react";
 
 export default function ServerContent() {
+  const result_hardening = useRef(null);
+  const result_hardening_history = useRef([]);
+  const result_hardening_history_failed = useRef([]);
+  const run_hardening_success = useRef(false);
   let { projectId } = useParams();
   const navigate = useNavigate();
   const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -49,12 +57,20 @@ export default function ServerContent() {
     }).then((res) => res.json());
   }
   const ws = useRef(null);
+  const run_history = useRef(null);
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:8000/api/ws");
     ws.current = socket;
     ws.current.onmessage = (e) => {
-      // setMessage(...message, e.data);
       setMessage((prev) => [...prev, e.data]);
+      run_history.current += e.data;
+      if (run_history.current.includes("PLAY [Run Hardening Task]")) {
+        result_hardening.current += e.data;
+        if (result_hardening.current.includes("PLAY RECAP")) {
+          renderHardening();
+          run_hardening_success.current = true;
+        }
+      }
     };
     return () => {
       ws.current.close();
@@ -79,6 +95,74 @@ export default function ServerContent() {
           server_id: server_id,
         }),
       }).then((res) => res.json());
+    }
+  }
+  function renderHardening() {
+    endOfMessageRef.current = null;
+    const rawResult = result_hardening.current;
+    let dom1 = [];
+    let dom2 = [];
+    const pattern_success = /TASK \[(.+?)\].*?\n(.+?): /gi;
+    const matches = Array.from(rawResult.matchAll(pattern_success));
+    const pattern_failure =
+      /TASK \[(.+?)\].*?\nfatal: .*?(UNREACHABLE|FAILED)! => ({\"changed\": .*?, \"msg\": \"(.+?)\", .*?}|{\"msg\": \"(.+?)\"})/gi;
+    const matches_failed = Array.from(rawResult.matchAll(pattern_failure));
+    // console.log(matches_failed);
+    for (const match of matches_failed) {
+      dom2.push(
+        <Accordion
+          variant="splitted"
+          style={{ padding: "0px" }}
+          classNames={{ title: "py-3" }}
+        >
+          <AccordionItem
+            classNames={{ title: "text-[#E8E8FC] text-[16px] bg-[#2E2E48]" }}
+            style={{
+              backgroundColor: "#2E2E48",
+              marginBottom: "10px",
+              padding: "0px 27px",
+            }}
+            id={match[1]}
+            title={
+              <div className="flex items-center gap-5">
+                <p>
+                  {match[1]} {""}
+                  <CancelIcon sx={{ color: "red" }} />
+                </p>
+              </div>
+            }
+          >
+            <p className="content-detail whitespace-pre-wrap">
+              <span className="font-bold">Detail:</span> {match[3]}
+            </p>
+          </AccordionItem>
+        </Accordion>
+      );
+    }
+
+    for (const match of matches) {
+      if (match[2] != "skipping" && match[2] != "fatal") {
+        // console.log(`${match[1]}: ${match[2]}`);
+        dom1.push(
+          <Card className="content-card-noneCheckBox" key={match[1]}>
+            <CardBody>
+              <p className="SubText">
+                {match[1]} <CheckCircleIcon color="success" />
+              </p>
+            </CardBody>
+          </Card>
+        );
+      }
+    }
+    result_hardening_history.current = dom1;
+    result_hardening_history_failed.current = dom2;
+    if (dom1.length == 0 && dom2.length == 0) {
+      run_hardening_success.current = true;
+      dom1.push(
+        <div className="text-white">
+          <CheckCircleIcon color="success" /> All topic are passed
+        </div>
+      );
     }
   }
   const renderCell = React.useCallback((item, columnKey) => {
@@ -124,9 +208,8 @@ export default function ServerContent() {
               <span className="text-lg text-success-400 cursor-pointer active:opacity-50">
                 <div
                   onClick={() => {
-                    // setModalTwoVisible(true);
-                    // runHarden(item._id);
                     setModalConfirmVisible(true);
+                    server_id.current = item._id;
                   }}
                 >
                   <PlayArrowIcon color="success" />
@@ -307,10 +390,27 @@ export default function ServerContent() {
               </ModalHeader>
               <ModalBody className="px-[8rem] bg-[#27273D]">
                 {message != "" ? "" : <Spinner color="white" />}
-                <p className="whitespace-pre-wrap text-left text-white">
-                  {message}
-                  <div ref={endOfMessageRef} />
-                </p>
+                {!run_hardening_success.current ? (
+                  <p className="whitespace-pre-wrap text-left text-white">
+                    {message}
+                    <div ref={endOfMessageRef} />
+                  </p>
+                ) : (
+                  <p className="whitespace-pre-wrap text-left text-white">
+                    {result_hardening_history.current.length > 0 && (
+                      <>
+                        <p className="font-bold">Success:</p>
+                        {result_hardening_history.current}
+                      </>
+                    )}
+                    {result_hardening_history_failed.current.length > 0 && (
+                      <>
+                        <p className="font-bold">Failed:</p>
+                        {result_hardening_history_failed.current}
+                      </>
+                    )}
+                  </p>
+                )}
               </ModalBody>
               <ModalFooter>
                 <Button
@@ -346,7 +446,8 @@ export default function ServerContent() {
               <ModalBody className="px-[2rem]">
                 <p>
                   This action will run the automate hardening process on the
-                  server. <p className="font-bold">Are you sure to continue?</p>
+                  server. (It means you can't select any topics.){" "}
+                  <p className="font-bold">Are you sure to continue?</p>
                 </p>
               </ModalBody>
               <ModalFooter>
@@ -363,6 +464,7 @@ export default function ServerContent() {
                   onPress={() => {
                     setModalConfirmVisible(false);
                     setModalTwoVisible(true);
+                    runHarden(server_id.current);
                   }}
                 >
                   Yes

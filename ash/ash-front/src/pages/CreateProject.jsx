@@ -82,7 +82,19 @@ export default function CreateProject() {
             <div className="text-right">
               <MyButton
                 className=" bg-[#b6b6b9] text-[#000000] shadow-xl py-4 px-8 rounded-xl mr-2 "
-                onClick={() => { navigate("/project");}}>
+                onClick={() => {
+                  switch (state) {
+                    case "project":
+                      navigate("/project");
+                      break;
+                    case "server":
+                      navigate(`/server/${project_id}`);
+                      break;
+                    default:
+                      break;
+                  }
+                }}
+              >
                 Back
               </MyButton>
               <MyButton
@@ -101,7 +113,10 @@ export default function CreateProject() {
                       break;
                   }
                 }}
-                isDisabled={(checkProject() && checkServer()) || invalidIP.current} >
+                isDisabled={
+                  (checkProject() && checkServer()) || invalidIP.current
+                }
+              >
                 Create
               </MyButton>
             </div>
@@ -109,7 +124,6 @@ export default function CreateProject() {
         </Card>
         <div class="dotCreate"></div>
       </div>
-
     </>
   );
 }

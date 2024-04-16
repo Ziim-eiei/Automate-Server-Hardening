@@ -282,7 +282,7 @@ function AuditCard() {
                 </div>
               }
               startContent={
-                <Button className="bg-[#2E2E48 w-fit">
+                <Button className="bg-[#2E2E48] w-fit">
                   <DeleteIcon
                     sx={{ color: "red" }}
                     className="cursor-pointer"
@@ -302,6 +302,13 @@ function AuditCard() {
           </Accordion>
         );
       }
+    }
+    if (dom.length === 0) {
+      dom.push(
+        <div className="text-white">
+          <CheckCircleIcon color="success" /> All topic are passed
+        </div>
+      );
     }
     setMessage(dom);
   }
