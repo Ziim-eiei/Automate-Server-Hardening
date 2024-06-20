@@ -33,3 +33,7 @@ docker run --name ash -d -p 80:80 -p 8000:8000 ghcr.io/ziim-eiei/automate-server
 Access web app:
 
 open on browser: <a href="http://localhost" target="_blank">http://localhost</a>
+
+## License
+
+Copyright (c) King Mongkut's University of Technology Thonburi (KMUTT)
